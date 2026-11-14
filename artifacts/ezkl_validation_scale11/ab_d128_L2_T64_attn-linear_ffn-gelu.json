@@ -1,0 +1,15 @@
+{
+ "name": "ab_d128_L2_T64_attn-linear_ffn-gelu",
+ "d_model": 128,
+ "n_layers": 2,
+ "seq_len": 64,
+ "attention": "linear",
+ "ffn": "gelu",
+ "status": "ok",
+ "logrows": 24,
+ "num_rows": 12431076,
+ "total_assignments": 24862152,
+ "num_lookups": 1,
+ "param_scale": 11,
+ "elapsed_s": 248.16127038002014
+}

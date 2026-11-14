@@ -1,0 +1,21 @@
+{
+ "name": "d512_L1_T64_linear",
+ "d_model": 512,
+ "n_layers": 1,
+ "seq_len": 64,
+ "activation": "linear",
+ "analytical_constraints": 413990912,
+ "status": "ok",
+ "logrows": 24,
+ "num_rows": 14727009,
+ "total_assignments": 29454018,
+ "total_const_size": 262336,
+ "num_lookups": 0,
+ "lookup_range": [
+  0,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 336.72425079345703
+}

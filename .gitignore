@@ -1,0 +1,45 @@
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+
+# Experiment results (large, reproducible)
+experiments/results/
+experiments/results_archive/
+
+# Model caches
+~/.cache/
+.cache/
+/tmp/mako-*/
+
+# EZKL artifacts
+*.srs
+*.compiled
+*.proof
+*.witness
+
+# Training checkpoints
+*.pt
+*.pth
+checkpoint_*.json
+
+# Mako/Jupyter
+.ipynb_checkpoints/
+*.log
+
+# Local config
+.env
+*.local
+
+# LaTeX build products
+*.aux
+*.out
+*.toc
+*.bbl
+*.blg
+.pytest_cache/
+.venv/

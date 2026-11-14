@@ -1,0 +1,21 @@
+{
+ "name": "d96_L1_T32_poly2",
+ "d_model": 96,
+ "n_layers": 1,
+ "seq_len": 32,
+ "activation": "poly2",
+ "analytical_constraints": 7952384,
+ "status": "ok",
+ "logrows": 22,
+ "num_rows": 2168530,
+ "total_assignments": 4337060,
+ "total_const_size": 49319,
+ "num_lookups": 1,
+ "lookup_range": [
+  -410268,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 28.282450199127197
+}

@@ -1,0 +1,15 @@
+{
+ "name": "ab_d64_L2_T32_attn-linear_ffn-relu",
+ "d_model": 64,
+ "n_layers": 2,
+ "seq_len": 32,
+ "attention": "linear",
+ "ffn": "relu",
+ "status": "ok",
+ "logrows": 22,
+ "num_rows": 2542961,
+ "total_assignments": 5085922,
+ "num_lookups": 0,
+ "param_scale": 11,
+ "elapsed_s": 34.426908016204834
+}

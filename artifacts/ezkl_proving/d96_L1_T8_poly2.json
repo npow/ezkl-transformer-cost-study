@@ -1,0 +1,23 @@
+{
+ "name": "d96_L1_T8_poly2",
+ "d_model": 96,
+ "n_layers": 1,
+ "seq_len": 8,
+ "activation": "poly2",
+ "scale": 11,
+ "logrows": 19,
+ "num_rows": 475318,
+ "param_scale": 11,
+ "compile_s": 0.03994154930114746,
+ "gen_srs_s": 15.056772470474243,
+ "setup_s": 70.11512541770935,
+ "witness_s": 1.8067357540130615,
+ "prove_s": 67.96321177482605,
+ "verify_s": 0.7062931060791016,
+ "verified": true,
+ "status": "ok",
+ "proof_bytes": 666583,
+ "pk_bytes": 9633927955,
+ "vk_bytes": 3804615,
+ "peak_rss_mb": 24818.87890625
+}

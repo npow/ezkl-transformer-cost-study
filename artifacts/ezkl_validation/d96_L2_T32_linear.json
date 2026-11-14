@@ -1,0 +1,21 @@
+{
+ "name": "d96_L2_T32_linear",
+ "d_model": 96,
+ "n_layers": 2,
+ "seq_len": 32,
+ "activation": "linear",
+ "analytical_constraints": 15415296,
+ "status": "ok",
+ "logrows": 22,
+ "num_rows": 2969043,
+ "total_assignments": 5938086,
+ "total_const_size": 49771,
+ "num_lookups": 0,
+ "lookup_range": [
+  0,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 13,
+ "elapsed_s": 114.33669829368591
+}

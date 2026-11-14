@@ -1,0 +1,21 @@
+{
+ "name": "d96_L4_T8_relu",
+ "d_model": 96,
+ "n_layers": 4,
+ "seq_len": 8,
+ "activation": "relu",
+ "analytical_constraints": 7499264,
+ "status": "ok",
+ "logrows": 21,
+ "num_rows": 1231474,
+ "total_assignments": 2462922,
+ "total_const_size": 49331,
+ "num_lookups": 1,
+ "lookup_range": [
+  -410070,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 41.41824746131897
+}

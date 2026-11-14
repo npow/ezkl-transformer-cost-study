@@ -1,0 +1,14 @@
+{
+ "name": "ab_d96_L2_T16_attn-linear_ffn-gelu",
+ "d_model": 96,
+ "n_layers": 2,
+ "seq_len": 16,
+ "attention": "linear",
+ "ffn": "gelu",
+ "status": "ok",
+ "logrows": 21,
+ "num_rows": 1937005,
+ "total_assignments": 3874010,
+ "num_lookups": 1,
+ "elapsed_s": 62.89489030838013
+}

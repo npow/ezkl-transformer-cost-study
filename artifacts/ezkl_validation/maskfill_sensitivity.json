@@ -1,0 +1,450 @@
+[
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "gelu",
+  "fill": -10000.0,
+  "logrows": 26,
+  "num_rows": 458765,
+  "lookup_range": [
+   -163840846,
+   6126
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "gelu",
+  "fill": -1000.0,
+  "logrows": 22,
+  "num_rows": 458765,
+  "lookup_range": [
+   -4096204,
+   1528
+  ],
+  "param_scale": 11
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "gelu",
+  "fill": -100.0,
+  "logrows": 19,
+  "num_rows": 458765,
+  "lookup_range": [
+   -410034,
+   1778
+  ],
+  "param_scale": 11
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "gelu",
+  "fill": -30.0,
+  "logrows": 19,
+  "num_rows": 458765,
+  "lookup_range": [
+   -492674,
+   5662
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "gelu",
+  "fill": -10.0,
+  "logrows": 19,
+  "num_rows": 458765,
+  "lookup_range": [
+   -165062,
+   5748
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "relu",
+  "fill": -10000.0,
+  "logrows": 26,
+  "num_rows": 375821,
+  "lookup_range": [
+   -163841104,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "relu",
+  "fill": -1000.0,
+  "logrows": 22,
+  "num_rows": 375821,
+  "lookup_range": [
+   -4096342,
+   0
+  ],
+  "param_scale": 11
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "relu",
+  "fill": -100.0,
+  "logrows": 19,
+  "num_rows": 375821,
+  "lookup_range": [
+   -409902,
+   0
+  ],
+  "param_scale": 11
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "relu",
+  "fill": -30.0,
+  "logrows": 19,
+  "num_rows": 375821,
+  "lookup_range": [
+   -492616,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "relu",
+  "fill": -10.0,
+  "logrows": 19,
+  "num_rows": 375821,
+  "lookup_range": [
+   -164796,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "poly2",
+  "fill": -10000.0,
+  "logrows": 26,
+  "num_rows": 407565,
+  "lookup_range": [
+   -163841146,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "poly2",
+  "fill": -1000.0,
+  "logrows": 22,
+  "num_rows": 407565,
+  "lookup_range": [
+   -4096252,
+   0
+  ],
+  "param_scale": 11
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "poly2",
+  "fill": -100.0,
+  "logrows": 19,
+  "num_rows": 407565,
+  "lookup_range": [
+   -409942,
+   0
+  ],
+  "param_scale": 11
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "poly2",
+  "fill": -30.0,
+  "logrows": 19,
+  "num_rows": 407565,
+  "lookup_range": [
+   -492712,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "poly2",
+  "fill": -10.0,
+  "logrows": 19,
+  "num_rows": 407565,
+  "lookup_range": [
+   -165104,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 64,
+  "L": 1,
+  "T": 8,
+  "act": "linear",
+  "fill": -10000.0,
+  "logrows": 19,
+  "num_rows": 347629,
+  "lookup_range": [
+   0,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "gelu",
+  "fill": -10000.0,
+  "logrows": 26,
+  "num_rows": 2718433,
+  "lookup_range": [
+   -163843458,
+   11324
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "gelu",
+  "fill": -1000.0,
+  "logrows": 22,
+  "num_rows": 2718415,
+  "lookup_range": [
+   -4096980,
+   2912
+  ],
+  "param_scale": 11
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "gelu",
+  "fill": -100.0,
+  "logrows": 22,
+  "num_rows": 2718407,
+  "lookup_range": [
+   -1641626,
+   10452
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "gelu",
+  "fill": -30.0,
+  "logrows": 22,
+  "num_rows": 2718443,
+  "lookup_range": [
+   -494112,
+   11278
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "gelu",
+  "fill": -10.0,
+  "logrows": 22,
+  "num_rows": 2718433,
+  "lookup_range": [
+   -166150,
+   11070
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "relu",
+  "fill": -10000.0,
+  "logrows": 26,
+  "num_rows": 2054849,
+  "lookup_range": [
+   -163842748,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "relu",
+  "fill": -1000.0,
+  "logrows": 22,
+  "num_rows": 2054891,
+  "lookup_range": [
+   -4096624,
+   0
+  ],
+  "param_scale": 11
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "relu",
+  "fill": -100.0,
+  "logrows": 21,
+  "num_rows": 2054849,
+  "lookup_range": [
+   -1642424,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "relu",
+  "fill": -30.0,
+  "logrows": 21,
+  "num_rows": 2054879,
+  "lookup_range": [
+   -494682,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "relu",
+  "fill": -10.0,
+  "logrows": 21,
+  "num_rows": 2054883,
+  "lookup_range": [
+   -166796,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "poly2",
+  "fill": -10000.0,
+  "logrows": 26,
+  "num_rows": 2308811,
+  "lookup_range": [
+   -163843012,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "poly2",
+  "fill": -1000.0,
+  "logrows": 22,
+  "num_rows": 2308835,
+  "lookup_range": [
+   -4096748,
+   0
+  ],
+  "param_scale": 11
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "poly2",
+  "fill": -100.0,
+  "logrows": 22,
+  "num_rows": 2308795,
+  "lookup_range": [
+   -1641564,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "poly2",
+  "fill": -30.0,
+  "logrows": 22,
+  "num_rows": 2308811,
+  "lookup_range": [
+   -494422,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "poly2",
+  "fill": -10.0,
+  "logrows": 22,
+  "num_rows": 2308833,
+  "lookup_range": [
+   -166906,
+   0
+  ],
+  "param_scale": 13
+ },
+ {
+  "d": 128,
+  "L": 2,
+  "T": 16,
+  "act": "linear",
+  "fill": -10000.0,
+  "logrows": 21,
+  "num_rows": 1882682,
+  "lookup_range": [
+   0,
+   0
+  ],
+  "param_scale": 13
+ }
+]

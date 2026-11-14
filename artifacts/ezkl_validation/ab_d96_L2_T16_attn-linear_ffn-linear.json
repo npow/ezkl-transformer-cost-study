@@ -1,0 +1,14 @@
+{
+ "name": "ab_d96_L2_T16_attn-linear_ffn-linear",
+ "d_model": 96,
+ "n_layers": 2,
+ "seq_len": 16,
+ "attention": "linear",
+ "ffn": "linear",
+ "status": "ok",
+ "logrows": 21,
+ "num_rows": 1341035,
+ "total_assignments": 2682070,
+ "num_lookups": 0,
+ "elapsed_s": 55.348639488220215
+}

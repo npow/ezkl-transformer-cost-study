@@ -1,0 +1,21 @@
+{
+ "name": "d128_L4_T16_linear",
+ "d_model": 128,
+ "n_layers": 4,
+ "seq_len": 16,
+ "activation": "linear",
+ "analytical_constraints": 26267648,
+ "status": "ok",
+ "logrows": 22,
+ "num_rows": 3383802,
+ "total_assignments": 6767604,
+ "total_const_size": 66203,
+ "num_lookups": 0,
+ "lookup_range": [
+  0,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 13,
+ "elapsed_s": 209.47014212608337
+}

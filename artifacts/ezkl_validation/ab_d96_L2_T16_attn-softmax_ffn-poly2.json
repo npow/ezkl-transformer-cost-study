@@ -1,0 +1,14 @@
+{
+ "name": "ab_d96_L2_T16_attn-softmax_ffn-poly2",
+ "d_model": 96,
+ "n_layers": 2,
+ "seq_len": 16,
+ "attention": "softmax",
+ "ffn": "poly2",
+ "status": "ok",
+ "logrows": 21,
+ "num_rows": 1670918,
+ "total_assignments": 3341810,
+ "num_lookups": 1,
+ "elapsed_s": 59.44075679779053
+}

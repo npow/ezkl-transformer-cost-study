@@ -1,0 +1,21 @@
+{
+ "name": "d128_L4_T32_relu",
+ "d_model": 128,
+ "n_layers": 4,
+ "seq_len": 32,
+ "activation": "relu",
+ "analytical_constraints": 54108160,
+ "status": "ok",
+ "logrows": 23,
+ "num_rows": 8169281,
+ "total_assignments": 16338484,
+ "total_const_size": 66205,
+ "num_lookups": 1,
+ "lookup_range": [
+  -1641302,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 13,
+ "elapsed_s": 349.39887285232544
+}

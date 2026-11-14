@@ -1,0 +1,15 @@
+{
+ "name": "ab_d128_L2_T32_attn-linear_ffn-linear",
+ "d_model": 128,
+ "n_layers": 2,
+ "seq_len": 32,
+ "attention": "linear",
+ "ffn": "linear",
+ "status": "ok",
+ "logrows": 22,
+ "num_rows": 4052338,
+ "total_assignments": 8104676,
+ "num_lookups": 0,
+ "param_scale": 11,
+ "elapsed_s": 102.63709259033203
+}

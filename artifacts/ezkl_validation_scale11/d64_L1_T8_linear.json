@@ -1,0 +1,21 @@
+{
+ "name": "d64_L1_T8_linear",
+ "d_model": 64,
+ "n_layers": 1,
+ "seq_len": 8,
+ "activation": "linear",
+ "analytical_constraints": 906240,
+ "status": "ok",
+ "logrows": 19,
+ "num_rows": 347629,
+ "total_assignments": 695258,
+ "total_const_size": 32924,
+ "num_lookups": 0,
+ "lookup_range": [
+  0,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 6.966532468795776
+}

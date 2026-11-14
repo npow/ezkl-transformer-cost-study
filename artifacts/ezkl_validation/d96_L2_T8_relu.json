@@ -1,0 +1,21 @@
+{
+ "name": "d96_L2_T8_relu",
+ "d_model": 96,
+ "n_layers": 2,
+ "seq_len": 8,
+ "activation": "relu",
+ "analytical_constraints": 3808768,
+ "status": "ok",
+ "logrows": 20,
+ "num_rows": 695672,
+ "total_assignments": 1391312,
+ "total_const_size": 49475,
+ "num_lookups": 1,
+ "lookup_range": [
+  -820144,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 12,
+ "elapsed_s": 37.2052047252655
+}

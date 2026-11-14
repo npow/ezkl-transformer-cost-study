@@ -1,0 +1,21 @@
+{
+ "name": "d96_L4_T16_linear",
+ "d_model": 96,
+ "n_layers": 4,
+ "seq_len": 16,
+ "activation": "linear",
+ "analytical_constraints": 14982144,
+ "status": "ok",
+ "logrows": 22,
+ "num_rows": 2362347,
+ "total_assignments": 4724694,
+ "total_const_size": 49324,
+ "num_lookups": 0,
+ "lookup_range": [
+  0,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 62.5680947303772
+}

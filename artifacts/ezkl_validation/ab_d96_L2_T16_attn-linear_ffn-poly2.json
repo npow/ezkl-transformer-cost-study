@@ -1,0 +1,14 @@
+{
+ "name": "ab_d96_L2_T16_attn-linear_ffn-poly2",
+ "d_model": 96,
+ "n_layers": 2,
+ "seq_len": 16,
+ "attention": "linear",
+ "ffn": "poly2",
+ "status": "ok",
+ "logrows": 21,
+ "num_rows": 1629803,
+ "total_assignments": 3259606,
+ "num_lookups": 0,
+ "elapsed_s": 58.43822765350342
+}

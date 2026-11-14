@@ -1,0 +1,23 @@
+{
+ "name": "d64_L1_T16_gelu",
+ "d_model": 64,
+ "n_layers": 1,
+ "seq_len": 16,
+ "activation": "gelu",
+ "scale": 11,
+ "logrows": 20,
+ "num_rows": 962073,
+ "param_scale": 11,
+ "compile_s": 0.029095172882080078,
+ "gen_srs_s": 29.65364956855774,
+ "setup_s": 144.07574343681335,
+ "witness_s": 2.6668477058410645,
+ "prove_s": 142.21081280708313,
+ "verify_s": 1.4270968437194824,
+ "verified": true,
+ "status": "ok",
+ "proof_bytes": 1291151,
+ "pk_bytes": 20274746395,
+ "vk_bytes": 7868039,
+ "peak_rss_mb": 51779.4140625
+}

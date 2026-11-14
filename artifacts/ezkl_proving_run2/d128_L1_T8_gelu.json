@@ -1,0 +1,23 @@
+{
+ "name": "d128_L1_T8_gelu",
+ "d_model": 128,
+ "n_layers": 1,
+ "seq_len": 8,
+ "activation": "gelu",
+ "scale": 11,
+ "logrows": 20,
+ "num_rows": 752653,
+ "param_scale": 11,
+ "compile_s": 0.06110668182373047,
+ "gen_srs_s": 43.53111457824707,
+ "setup_s": 158.9765908718109,
+ "witness_s": 4.5717082023620605,
+ "prove_s": 165.78210282325745,
+ "verify_s": 1.4724373817443848,
+ "verified": true,
+ "status": "ok",
+ "proof_bytes": 669546,
+ "pk_bytes": 20274746395,
+ "vk_bytes": 7868039,
+ "peak_rss_mb": 52064.88671875
+}

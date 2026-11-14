@@ -1,0 +1,21 @@
+{
+ "name": "d256_L2_T16_linear",
+ "d_model": 256,
+ "n_layers": 2,
+ "seq_len": 16,
+ "activation": "linear",
+ "analytical_constraints": 51617792,
+ "status": "ok",
+ "logrows": 22,
+ "num_rows": 3287609,
+ "total_assignments": 6575218,
+ "total_const_size": 131259,
+ "num_lookups": 0,
+ "lookup_range": [
+  0,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 100.65024638175964
+}

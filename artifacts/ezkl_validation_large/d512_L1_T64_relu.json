@@ -1,0 +1,21 @@
+{
+ "name": "d512_L1_T64_relu",
+ "d_model": 512,
+ "n_layers": 1,
+ "seq_len": 64,
+ "activation": "relu",
+ "analytical_constraints": 414777344,
+ "status": "ok",
+ "logrows": 24,
+ "num_rows": 16066657,
+ "total_assignments": 32133314,
+ "total_const_size": 262338,
+ "num_lookups": 1,
+ "lookup_range": [
+  -413556,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 338.04695296287537
+}

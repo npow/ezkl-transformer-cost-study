@@ -1,0 +1,6 @@
+{
+ "name": "gpt2_pretrained_zero_shot",
+ "seq_len": 256,
+ "val_ppl": 44.42702801647405,
+ "test_ppl": 43.53445824148672
+}

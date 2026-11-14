@@ -1,0 +1,21 @@
+{
+ "name": "d96_L1_T16_relu",
+ "d_model": 96,
+ "n_layers": 1,
+ "seq_len": 16,
+ "activation": "relu",
+ "analytical_constraints": 3894272,
+ "status": "ok",
+ "logrows": 20,
+ "num_rows": 899946,
+ "total_assignments": 1799892,
+ "total_const_size": 49320,
+ "num_lookups": 1,
+ "lookup_range": [
+  -410126,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 30.13618779182434
+}

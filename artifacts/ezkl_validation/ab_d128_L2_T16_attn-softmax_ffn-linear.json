@@ -1,0 +1,14 @@
+{
+ "name": "ab_d128_L2_T16_attn-softmax_ffn-linear",
+ "d_model": 128,
+ "n_layers": 2,
+ "seq_len": 16,
+ "attention": "softmax",
+ "ffn": "linear",
+ "status": "ok",
+ "logrows": 21,
+ "num_rows": 1923805,
+ "total_assignments": 3847576,
+ "num_lookups": 1,
+ "elapsed_s": 117.70261311531067
+}

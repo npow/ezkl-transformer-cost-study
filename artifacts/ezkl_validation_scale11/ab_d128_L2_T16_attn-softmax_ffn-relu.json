@@ -1,0 +1,15 @@
+{
+ "name": "ab_d128_L2_T16_attn-softmax_ffn-relu",
+ "d_model": 128,
+ "n_layers": 2,
+ "seq_len": 16,
+ "attention": "softmax",
+ "ffn": "relu",
+ "status": "ok",
+ "logrows": 21,
+ "num_rows": 2054845,
+ "total_assignments": 4109688,
+ "num_lookups": 1,
+ "param_scale": 11,
+ "elapsed_s": 60.88283014297485
+}

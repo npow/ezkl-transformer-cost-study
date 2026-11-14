@@ -1,0 +1,15 @@
+{
+ "name": "ab_d64_L2_T64_attn-softmax_ffn-gelu",
+ "d_model": 64,
+ "n_layers": 2,
+ "seq_len": 64,
+ "attention": "softmax",
+ "ffn": "gelu",
+ "status": "ok",
+ "logrows": 24,
+ "num_rows": 8519909,
+ "total_assignments": 17039818,
+ "num_lookups": 2,
+ "param_scale": 11,
+ "elapsed_s": 98.61236667633057
+}

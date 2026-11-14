@@ -1,0 +1,21 @@
+{
+ "name": "d512_L1_T64_gelu",
+ "d_model": 512,
+ "n_layers": 1,
+ "seq_len": 64,
+ "activation": "gelu",
+ "analytical_constraints": 417660928,
+ "status": "ok",
+ "logrows": 25,
+ "num_rows": 21375073,
+ "total_assignments": 42750146,
+ "total_const_size": 262339,
+ "num_lookups": 2,
+ "lookup_range": [
+  -412934,
+  5756
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 377.6848211288452
+}

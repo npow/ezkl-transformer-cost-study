@@ -1,0 +1,15 @@
+{
+ "name": "ab_d64_L2_T8_attn-softmax_ffn-poly2",
+ "d_model": 64,
+ "n_layers": 2,
+ "seq_len": 8,
+ "attention": "softmax",
+ "ffn": "poly2",
+ "status": "ok",
+ "logrows": 20,
+ "num_rows": 650559,
+ "total_assignments": 1301118,
+ "num_lookups": 1,
+ "param_scale": 11,
+ "elapsed_s": 13.039600610733032
+}

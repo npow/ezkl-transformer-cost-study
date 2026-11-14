@@ -1,0 +1,23 @@
+{
+ "name": "d64_L1_T8_relu",
+ "d_model": 64,
+ "n_layers": 1,
+ "seq_len": 8,
+ "activation": "relu",
+ "scale": 11,
+ "logrows": 19,
+ "num_rows": 375821,
+ "param_scale": 11,
+ "compile_s": 0.021844863891601562,
+ "gen_srs_s": 14.096458435058594,
+ "setup_s": 61.85528206825256,
+ "witness_s": 1.3192496299743652,
+ "prove_s": 67.19926619529724,
+ "verify_s": 0.6589643955230713,
+ "verified": true,
+ "status": "ok",
+ "proof_bytes": 666549,
+ "pk_bytes": 9633927955,
+ "vk_bytes": 3804615,
+ "peak_rss_mb": 24744.7890625
+}

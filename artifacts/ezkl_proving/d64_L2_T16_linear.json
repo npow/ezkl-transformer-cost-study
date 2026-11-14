@@ -1,0 +1,23 @@
+{
+ "name": "d64_L2_T16_linear",
+ "d_model": 64,
+ "n_layers": 2,
+ "seq_len": 16,
+ "activation": "linear",
+ "scale": 11,
+ "logrows": 21,
+ "num_rows": 1109561,
+ "param_scale": 11,
+ "compile_s": 0.04930686950683594,
+ "gen_srs_s": 57.75842022895813,
+ "setup_s": 218.43217158317566,
+ "witness_s": 3.701491355895996,
+ "prove_s": 217.6042628288269,
+ "verify_s": 2.790452003479004,
+ "verified": true,
+ "status": "ok",
+ "proof_bytes": 1281755,
+ "pk_bytes": 33836765355,
+ "vk_bytes": 13896711,
+ "peak_rss_mb": 79308.57421875
+}

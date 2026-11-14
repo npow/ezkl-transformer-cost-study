@@ -1,0 +1,23 @@
+{
+ "name": "d64_L2_T8_linear",
+ "d_model": 64,
+ "n_layers": 2,
+ "seq_len": 8,
+ "activation": "linear",
+ "scale": 11,
+ "logrows": 20,
+ "num_rows": 530685,
+ "param_scale": 11,
+ "compile_s": 0.045488595962524414,
+ "gen_srs_s": 43.83204412460327,
+ "setup_s": 129.30284571647644,
+ "witness_s": 2.572305679321289,
+ "prove_s": 172.3834090232849,
+ "verify_s": 1.5355830192565918,
+ "verified": true,
+ "status": "ok",
+ "proof_bytes": 660198,
+ "pk_bytes": 16918384811,
+ "vk_bytes": 6949895,
+ "peak_rss_mb": 39670.40234375
+}

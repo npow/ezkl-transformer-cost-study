@@ -1,0 +1,21 @@
+{
+ "name": "d96_L4_T8_gelu",
+ "d_model": 96,
+ "n_layers": 4,
+ "seq_len": 8,
+ "activation": "gelu",
+ "analytical_constraints": 7769600,
+ "status": "ok",
+ "logrows": 21,
+ "num_rows": 1729146,
+ "total_assignments": 3458260,
+ "total_const_size": 49796,
+ "num_lookups": 2,
+ "lookup_range": [
+  -1640178,
+  8338
+ ],
+ "input_scale": 0,
+ "param_scale": 13,
+ "elapsed_s": 77.00269865989685
+}

@@ -1,0 +1,21 @@
+{
+ "name": "d512_L1_T64_poly2",
+ "d_model": 512,
+ "n_layers": 1,
+ "seq_len": 64,
+ "activation": "poly2",
+ "analytical_constraints": 414777344,
+ "status": "ok",
+ "logrows": 25,
+ "num_rows": 18098273,
+ "total_assignments": 36196546,
+ "total_const_size": 262338,
+ "num_lookups": 1,
+ "lookup_range": [
+  -413460,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 380.2145993709564
+}

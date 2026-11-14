@@ -1,0 +1,21 @@
+{
+ "name": "d256_L2_T64_gelu",
+ "d_model": 256,
+ "n_layers": 2,
+ "seq_len": 64,
+ "activation": "gelu",
+ "analytical_constraints": 216170496,
+ "status": "ok",
+ "logrows": 25,
+ "num_rows": 21999845,
+ "total_assignments": 43999690,
+ "total_const_size": 131261,
+ "num_lookups": 2,
+ "lookup_range": [
+  -411416,
+  4264
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 294.2095537185669
+}

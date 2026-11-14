@@ -1,0 +1,21 @@
+{
+ "name": "d128_L2_T16_relu",
+ "d_model": 128,
+ "n_layers": 2,
+ "seq_len": 16,
+ "activation": "relu",
+ "analytical_constraints": 13324288,
+ "status": "ok",
+ "logrows": 21,
+ "num_rows": 2054889,
+ "total_assignments": 4109732,
+ "total_const_size": 65708,
+ "num_lookups": 1,
+ "lookup_range": [
+  -410374,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 71.8845808506012
+}

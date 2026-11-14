@@ -1,0 +1,21 @@
+{
+ "name": "d64_L2_T32_gelu",
+ "d_model": 64,
+ "n_layers": 2,
+ "seq_len": 32,
+ "activation": "gelu",
+ "analytical_constraints": 7786496,
+ "status": "ok",
+ "logrows": 22,
+ "num_rows": 3546741,
+ "total_assignments": 7093482,
+ "total_const_size": 32930,
+ "num_lookups": 2,
+ "lookup_range": [
+  -410078,
+  1842
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 49.600852489471436
+}

@@ -1,0 +1,23 @@
+{
+ "name": "d64_L1_T16_poly2",
+ "d_model": 64,
+ "n_layers": 1,
+ "seq_len": 16,
+ "activation": "poly2",
+ "scale": 11,
+ "logrows": 20,
+ "num_rows": 859673,
+ "param_scale": 11,
+ "compile_s": 0.02523970603942871,
+ "gen_srs_s": 28.889509916305542,
+ "setup_s": 134.2287154197693,
+ "witness_s": 2.2366268634796143,
+ "prove_s": 137.5539584159851,
+ "verify_s": 1.461216688156128,
+ "verified": true,
+ "status": "ok",
+ "proof_bytes": 1287928,
+ "pk_bytes": 19267851027,
+ "vk_bytes": 7605703,
+ "peak_rss_mb": 47779.3359375
+}

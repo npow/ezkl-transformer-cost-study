@@ -1,0 +1,21 @@
+{
+ "name": "d96_L2_T32_relu",
+ "d_model": 96,
+ "n_layers": 2,
+ "seq_len": 32,
+ "activation": "relu",
+ "analytical_constraints": 15726592,
+ "status": "ok",
+ "logrows": 22,
+ "num_rows": 3317536,
+ "total_assignments": 6634996,
+ "total_const_size": 49770,
+ "num_lookups": 1,
+ "lookup_range": [
+  -1641204,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 13,
+ "elapsed_s": 117.17544388771057
+}

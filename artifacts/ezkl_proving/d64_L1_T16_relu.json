@@ -1,0 +1,23 @@
+{
+ "name": "d64_L1_T16_relu",
+ "d_model": 64,
+ "n_layers": 1,
+ "seq_len": 16,
+ "activation": "relu",
+ "scale": 11,
+ "logrows": 20,
+ "num_rows": 796185,
+ "param_scale": 11,
+ "compile_s": 0.02487015724182129,
+ "gen_srs_s": 30.900694847106934,
+ "setup_s": 134.2855727672577,
+ "witness_s": 2.0509536266326904,
+ "prove_s": 134.29166531562805,
+ "verify_s": 1.510603427886963,
+ "verified": true,
+ "status": "ok",
+ "proof_bytes": 1288291,
+ "pk_bytes": 19267851027,
+ "vk_bytes": 7605703,
+ "peak_rss_mb": 47416.0625
+}

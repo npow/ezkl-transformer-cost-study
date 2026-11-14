@@ -1,0 +1,21 @@
+{
+ "name": "d128_L1_T32_linear",
+ "d_model": 128,
+ "n_layers": 1,
+ "seq_len": 32,
+ "activation": "linear",
+ "analytical_constraints": 13541376,
+ "status": "ok",
+ "logrows": 22,
+ "num_rows": 2407345,
+ "total_assignments": 4814690,
+ "total_const_size": 66151,
+ "num_lookups": 0,
+ "lookup_range": [
+  0,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 13,
+ "elapsed_s": 104.44196033477783
+}

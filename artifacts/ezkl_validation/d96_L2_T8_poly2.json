@@ -1,0 +1,21 @@
+{
+ "name": "d96_L2_T8_poly2",
+ "d_model": 96,
+ "n_layers": 2,
+ "seq_len": 8,
+ "activation": "poly2",
+ "analytical_constraints": 3808768,
+ "status": "ok",
+ "logrows": 20,
+ "num_rows": 790900,
+ "total_assignments": 1581772,
+ "total_const_size": 49473,
+ "num_lookups": 1,
+ "lookup_range": [
+  -820204,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 12,
+ "elapsed_s": 38.53669500350952
+}

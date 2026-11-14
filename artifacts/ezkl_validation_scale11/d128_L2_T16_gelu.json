@@ -1,0 +1,21 @@
+{
+ "name": "d128_L2_T16_gelu",
+ "d_model": 128,
+ "n_layers": 2,
+ "seq_len": 16,
+ "activation": "gelu",
+ "analytical_constraints": 13684736,
+ "status": "ok",
+ "logrows": 22,
+ "num_rows": 2718443,
+ "total_assignments": 5436840,
+ "total_const_size": 65709,
+ "num_lookups": 2,
+ "lookup_range": [
+  -410422,
+  2748
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 59.90036582946777
+}

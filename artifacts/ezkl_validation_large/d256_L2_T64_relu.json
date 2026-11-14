@@ -1,0 +1,21 @@
+{
+ "name": "d256_L2_T64_relu",
+ "d_model": 256,
+ "n_layers": 2,
+ "seq_len": 64,
+ "activation": "relu",
+ "analytical_constraints": 213286912,
+ "status": "ok",
+ "logrows": 24,
+ "num_rows": 16691427,
+ "total_assignments": 33382854,
+ "total_const_size": 131260,
+ "num_lookups": 1,
+ "lookup_range": [
+  -411166,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 277.5588490962982
+}

@@ -1,0 +1,21 @@
+{
+ "name": "d128_L2_T8_poly2",
+ "d_model": 128,
+ "n_layers": 2,
+ "seq_len": 8,
+ "activation": "poly2",
+ "analytical_constraints": 6645760,
+ "status": "ok",
+ "logrows": 21,
+ "num_rows": 1109831,
+ "total_assignments": 2219654,
+ "total_const_size": 65710,
+ "num_lookups": 1,
+ "lookup_range": [
+  -410598,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 11,
+ "elapsed_s": 55.09021973609924
+}
