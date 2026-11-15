@@ -1,0 +1,23 @@
+{
+ "name": "d96_L1_T8_linear",
+ "d_model": 96,
+ "n_layers": 1,
+ "seq_len": 8,
+ "activation": "linear",
+ "analytical_constraints": 1949184,
+ "status": "ok",
+ "logrows": 19,
+ "num_rows": 397206,
+ "total_assignments": 794412,
+ "total_const_size": 49740,
+ "num_inner_cols": 2,
+ "total_dynamic_col_size": 49152,
+ "num_lookups": 0,
+ "lookup_range": [
+  0,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 13,
+ "elapsed_s": 16.039241313934326
+}

@@ -59,6 +59,7 @@ for macro, rep in {r"\dmodel": r"d_{\mathrm{model}}", r"\nlayers": r"n_{\mathrm{
     src = re.sub(re.escape(macro) + r"(?![A-Za-z])", lambda _m, r=rep: r, src)
 # \path{..} (breakable file names) -> verbatim; drop \resizebox wrappers pandoc cannot parse
 src = re.sub(r"\\path\{([^}]*)\}", lambda m: "\\verb|" + m.group(1) + "|", src)
+src = re.sub(r"\\texttt\{([^}]*)\}", lambda m: "\\verb|" + m.group(1).replace(r"\_", "_") + "|", src)
 src = re.sub(r"\\resizebox\{[^}]*\}\{[^}]*\}\{%?\s*", "", src)
 src = re.sub(r"(\\end\{tabular\})\}", r"\1", src)
 src = src.replace("\\footnotesize", "").replace("\\small", "")

@@ -1,0 +1,23 @@
+{
+ "name": "d64_L1_T16_linear",
+ "d_model": 64,
+ "n_layers": 1,
+ "seq_len": 16,
+ "activation": "linear",
+ "analytical_constraints": 1779712,
+ "status": "ok",
+ "logrows": 20,
+ "num_rows": 719321,
+ "total_assignments": 1438642,
+ "total_const_size": 33337,
+ "num_inner_cols": 2,
+ "total_dynamic_col_size": 32768,
+ "num_lookups": 0,
+ "lookup_range": [
+  0,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 13,
+ "elapsed_s": 16.472118139266968
+}

@@ -1,0 +1,115 @@
+{
+  "n": 108,
+  "num_inner_cols": {
+    "unique": [
+      2
+    ],
+    "min": 2,
+    "median": 2.0,
+    "max": 2
+  },
+  "dynamic_column_size": {
+    "min": 32768,
+    "median": 49152.0,
+    "max": 65536
+  },
+  "rows": {
+    "min": 347629,
+    "median": 1772755.0,
+    "max": 10823483
+  },
+  "rows_times_inner_cols": {
+    "min": 695258,
+    "median": 3545510.0,
+    "max": 21646966
+  },
+  "spearman": {
+    "rows_vs_operation_count": 0.9267460795981997,
+    "rows_times_inner_cols_vs_operation_count": 0.9267460795981997,
+    "rows_vs_dimension_product": 0.9642095342648261,
+    "rows_times_inner_cols_vs_dimension_product": 0.9642095342648261,
+    "rows_vs_rows_times_inner_cols": 0.9999999999999999
+  },
+  "by_width": {
+    "64": {
+      "n": 36,
+      "num_inner_cols": [
+        2
+      ],
+      "dynamic_column_size": [
+        32768
+      ],
+      "rows_times_inner_cols": {
+        "min": 695258,
+        "median": 2731550.0,
+        "max": 12869102
+      }
+    },
+    "96": {
+      "n": 36,
+      "num_inner_cols": [
+        2
+      ],
+      "dynamic_column_size": [
+        49152
+      ],
+      "rows_times_inner_cols": {
+        "min": 794412,
+        "median": 3400056.0,
+        "max": 15971904
+      }
+    },
+    "128": {
+      "n": 36,
+      "num_inner_cols": [
+        2
+      ],
+      "dynamic_column_size": [
+        65536
+      ],
+      "rows_times_inner_cols": {
+        "min": 1096154,
+        "median": 4716176.0,
+        "max": 21646966
+      }
+    }
+  },
+  "by_activation": {
+    "gelu": {
+      "n": 27,
+      "unique_num_inner_cols": [
+        2
+      ],
+      "rows_min": 458765,
+      "rows_median": 2102321.0,
+      "rows_max": 10823483
+    },
+    "linear": {
+      "n": 27,
+      "unique_num_inner_cols": [
+        2
+      ],
+      "rows_min": 347629,
+      "rows_median": 1534897.0,
+      "rows_max": 7341298
+    },
+    "poly2": {
+      "n": 27,
+      "unique_num_inner_cols": [
+        2
+      ],
+      "rows_min": 407565,
+      "rows_median": 1897521.0,
+      "rows_max": 9185083
+    },
+    "relu": {
+      "n": 27,
+      "unique_num_inner_cols": [
+        2
+      ],
+      "rows_min": 375821,
+      "rows_median": 1770545.0,
+      "rows_max": 8169261
+    }
+  }
+}

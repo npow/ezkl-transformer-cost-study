@@ -1,0 +1,77 @@
+{
+  "seed": 51051,
+  "steps": 500,
+  "architecture": {
+    "d_model": 128,
+    "heads": 4,
+    "layers": 2,
+    "seq_len": 16,
+    "activation": "relu",
+    "vocab_size": 512,
+    "ff_mult": 4,
+    "positions": "learned",
+    "layernorm": true,
+    "tied_embeddings": true
+  },
+  "token_map_sha256": "25c5fc6412c9990d117dfa848817f38340eb014ef1509ce8b2f034ddcbce78fd",
+  "state_dict_sha256": "d3cf300b82b9967f77623296136d0f902856f11118c20bc128480a48d9ba47da",
+  "evaluation_sample_audit": {
+    "validation": {
+      "sequence_count": 64,
+      "target_token_count": 960,
+      "sequence_length": 16,
+      "block_indices_sha256": "d33d053f7974bf1d968293ab1899fb996cb759763c79a8df343b66c64d2dd443",
+      "context_ids_sha256": "d1733757640b67e2c6b09cd1994aa651f0e07d3aca7d56b112b6848ef645b628",
+      "target_ids_sha256": "42e970cb94b16a94e70f7d94effec6d54933589a26d9653a2dd73c6ae019519d"
+    },
+    "test": {
+      "sequence_count": 64,
+      "target_token_count": 960,
+      "sequence_length": 16,
+      "block_indices_sha256": "517cc586d0eb76c88504a49a656d4d96ff4ff58daecc0af31338c72d4a757c64",
+      "context_ids_sha256": "b6adb7ce950d2d00150e339c48d75fc74347152ea8b25319812d84f10c9846bc",
+      "target_ids_sha256": "2f859b32d35f8895822e4fd96de12ef0ced83afde08812e168f61c71371836ea"
+    }
+  },
+  "full_precision": {
+    "validation_ppl": 16.63618042377788,
+    "validation_targets": 960,
+    "test_ppl": 17.356153307971166,
+    "test_targets": 960
+  },
+  "ezkl": {
+    "version": "23.0.5",
+    "num_rows": 2319073,
+    "num_inner_cols": 2,
+    "logrows": 22,
+    "param_scale": 11,
+    "total_dynamic_col_size": 65536,
+    "settings_version": "23.0.5"
+  },
+  "quantized": {
+    "validation": {
+      "ppl": 16.635180629969998,
+      "nll": 2699.058977127075,
+      "target_tokens": 960,
+      "relative_ppl_change_percent": -0.006009755739677658
+    },
+    "test": {
+      "ppl": 17.375525675074726,
+      "nll": 2740.8601398468018,
+      "target_tokens": 960,
+      "relative_ppl_change_percent": 0.11161670883987895
+    }
+  },
+  "elapsed_total_run_s": 1664.5754880905151,
+  "compiled_artifact_sha256": {
+    "model.onnx": "9e03900b37134cb5b03d5af460e27a700182db9a7a2fb4a9b1530cce5e6c049d",
+    "model.ezkl": "cf2c93d705538521e7ba730d25275404b79bc54383ac76368ed1c3beaf756097",
+    "settings.json": "b2070cb849978e48bba686ee3bb32d882a5acf655024bb8dba64f6e3cf88c90d"
+  },
+  "witness_decode_check": {
+    "sample": "test block 0",
+    "max_abs_logit_error": 0.20136451721191406,
+    "mean_abs_logit_error": 0.010789061896502972,
+    "fixed_point_scale": 11
+  }
+}

@@ -1,0 +1,23 @@
+{
+ "name": "d128_L4_T8_gelu",
+ "d_model": 128,
+ "n_layers": 4,
+ "seq_len": 8,
+ "activation": "gelu",
+ "analytical_constraints": 13494272,
+ "status": "ok",
+ "logrows": 22,
+ "num_rows": 2438517,
+ "total_assignments": 4877014,
+ "total_const_size": 66211,
+ "num_inner_cols": 2,
+ "total_dynamic_col_size": 65536,
+ "num_lookups": 2,
+ "lookup_range": [
+  -1640704,
+  10560
+ ],
+ "input_scale": 0,
+ "param_scale": 13,
+ "elapsed_s": 72.32082509994507
+}

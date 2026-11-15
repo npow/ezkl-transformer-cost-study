@@ -1,0 +1,23 @@
+{
+ "name": "d96_L4_T32_linear",
+ "d_model": 96,
+ "n_layers": 4,
+ "seq_len": 32,
+ "activation": "linear",
+ "analytical_constraints": 30652416,
+ "status": "ok",
+ "logrows": 23,
+ "num_rows": 5298387,
+ "total_assignments": 10596774,
+ "total_const_size": 49795,
+ "num_inner_cols": 2,
+ "total_dynamic_col_size": 49152,
+ "num_lookups": 0,
+ "lookup_range": [
+  0,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 13,
+ "elapsed_s": 856.3407480716705
+}

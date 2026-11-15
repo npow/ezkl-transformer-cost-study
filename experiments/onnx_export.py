@@ -20,6 +20,7 @@ def export_onnx(model: torch.nn.Module, sample_input: torch.Tensor, path: str) -
             opset_version=18,
             input_names=["input_ids"],
             output_names=["logits"],
+            dynamo=False,
         )
     buf.seek(0)
     model_proto = onnx.load_from_string(buf.read())

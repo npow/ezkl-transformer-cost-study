@@ -26,8 +26,8 @@
 %% ============================================================
 \begin{document}
 
-\title{What Costs Rows and Proving Time in Small EZKL Transformer Circuits,\\
-       and What It Costs in Perplexity}
+\title{What Costs Rows in Small EZKL Transformer Circuits,\\
+       and What It Costs in Quantized Quality}
 
 \author{%
   Nissan Pow\\
@@ -39,35 +39,36 @@
 % ============================================================
 \begin{abstract}
 % ============================================================
-Design advice for zero-knowledge (ZK) transformer inference rests on analytical
-constraint-count models and on swapping activations for cheaper ones. We test an
-analytical model against EZKL~23.0.5 on small causal transformers and measure
-what each choice costs in perplexity. We compile 108 configurations (width
+Published accounts argue that nonlinear operations can dominate zero-knowledge
+(ZK) inference cost, while matrix products can be relatively cheap. We measure
+how EZKL~23.0.5 allocates rows and advice columns for small causal transformers
+and what one jointly compiled and trained configuration costs in quantized
+quality. We also formalize one operation-counting heuristic as an explicit
+predictor; this is our own stand-in, not a published model. We compile 108
+configurations (width
 64--128, 1--4 layers, sequence length 8--32, four activation variants) and
-generate 24 verified proofs. The analytical model ranks compiled row counts well
+measure proof-domain sizes without making proving-time comparisons. All report
+two inner columns, so rows multiplied by this count preserve row rankings. The
+operation-count stand-in ranks compiled row counts well
 (Spearman $\rho{=}0.93$) but no better than the product of the dimensions ($0.96$),
 is uncalibrated (measured/modelled rows $0.12$--$0.53$), and predicts held-out
 widths, depths and sequence lengths worse ($24$--$38\%$ error) than a power law
-($6$--$18\%$) or a calibrated additive model ($8$--$11\%$). On 16 out-of-range configurations (width 256--512) the analytical model's
+($6$--$18\%$) or a calibrated additive model ($8$--$11\%$). On 16 out-of-range configurations (width 256--512) the stand-in's
 fitted prediction errs by $122\%$ against $10\%$ for the dimension product, and
 the activation overheads persist (GELU $1.45$--$1.54\times$, ReLU
-$1.08$--$1.17\times$ the linear variant's rows). Rows predict proving
-time (Spearman $0.89$ over six shapes, no better than the dimension product), and
-proving time is a step function of the power-of-two proving domain: crossing a
-boundary doubled it. Repeated runs on a shared machine differ by up to $1.9\times$,
-so proving times do not separate the nonlinearities. For
+$1.08$--$1.17\times$ the linear variant's rows). For
 sequences up to 32, the FFN nonlinearity dominates the row overhead for GELU and poly2 (at width
 128, ReLU $+7\%$, poly2 $+20\%$, GELU $+42\%$), but softmax grows with sequence length
 (from $4\%$ to $24\%$ at width 64 as the length goes from 8 to 64). EZKL's domain
 size also depends on an implementation detail, the causal-mask fill value, which
 moved it from 19 to 26 at constant rows. In a WikiText-2 study (3 seeds,
 validation-selected checkpoints), ReLU, poly2 and GELU are within $1\%$ in
-perplexity, larger models help, and nothing trained from scratch approaches
-pretrained GPT-2. Compiled circuits reach width 512 (the grid width 128) with at most four layers,
-proofs only domains up to $2^{21}$, proving times come from one or two runs on a
-shared machine, and quantized
-accuracy is not measured. Code and
-raw records are released.
+perplexity, and larger models help within the tested protocol. Compiled circuits
+reach width 512 (the grid width 128) with at most four layers, and the mask-fill
+sweep spans domains 19--26. The large-vocabulary quality models were not
+compiled; for one matched 512-symbol model, fixed-point test PPL is 17.376
+versus 17.356 in full precision on 960 targets. Code and raw records are
+released.
 \end{abstract}
 
 % ============================================================
@@ -76,35 +77,32 @@ raw records are released.
 % ============================================================
 
 Verifiable inference---proving that a model ran correctly on private
-inputs---needs a ZK proof of the network's forward pass, and proving
-transformer-scale models is costly~\citep{zkllm2024,zkgpt2025,nanozk2026}. A
-common design heuristic substitutes polynomial activations for GELU and softmax;
-an analytical counter-argument says matrix multiplication dominates the circuit
-so activation choice barely matters and shape ($\dmodel$, $\nlayers$) is the
-lever. Both are statements about cost models, not measurements. We measure, for
-one prover version, (i) how well an analytical constraint model predicts compiled
-circuit size, (ii) which architectural choices actually cost rows, and (iii) what
-those choices cost in language-model quality. Our contributions:
+inputs---is costly for transformer-scale models~\citep{zkllm2024,zkgpt2025,nanozk2026}.
+Prior work and engineering accounts discuss the relative cost of nonlinearities,
+matrix products, and lookup ranges~\citep{ganescu2024,jo2026,ezklnanogpt2023,
+pow2024,gupta2026,zkcostaware2026}. We measure those effects in a controlled
+EZKL~23.0.5 transformer grid. To make an operation-counting intuition
+testable, we define one explicit per-operator predictor; it is an author-built
+stand-in for a broad heuristic, not a published cost model. Our contributions are
+an EZKL-specific row-and-column characterization against simple shape baselines,
+a causal-mask-fill measurement of proving-domain size, and a small matched
+measurement of compiled cost and quantized quality.
 
 \begin{enumerate}
-  \item \textbf{A measured test of an analytical cost model}
-    (Section~\ref{sec:ezkl}): 108 EZKL compilations, with trivial baselines, a
-    calibrated additive competitor, a cluster bootstrap over shapes, and
-    leave-one-axis-out tests; and 24 verified proofs relating rows to proving time,
-    memory and key size (Section~\ref{sec:proving}).
-  \item \textbf{An attention/FFN decomposition} of the activation overhead across
-    sequence lengths (Section~\ref{sec:ezkl}), and the finding that EZKL's
-    proving-domain size depends on the causal-mask fill value
-    (Section~\ref{sec:domain}).
-  \item \textbf{A leak-free, checkpoint-selected quality study}
-    (Section~\ref{sec:quality}) and a joint reading of cost and quality
-    (Section~\ref{sec:joint}).
+  \item \textbf{A controlled EZKL circuit-shape study}: 108 configurations,
+    simple shape baselines, a cluster bootstrap, held-out-axis and out-of-range
+    prediction, plus advice-column counts (Section~\ref{sec:ezkl}).
+  \item \textbf{Implementation-level measurements}: attention/FFN row
+    decomposition and mask-fill effects on proving domains (Sections~\ref{sec:ezkl}--\ref{sec:domain}).
+  \item \textbf{A trained-and-compiled small model}: full-precision and
+    EZKL-quantized quality are measured on the same architecture and weights
+    (Sections~\ref{sec:quality}--\ref{sec:joint}).
 \end{enumerate}
 
 \paragraph{What this paper does not show.}
-We prove only 24 small circuits (domain at most $2^{21}$) from one or two noisy runs each; we do
-not measure circuits larger than width 128; and we do not study other proof
-systems (Section~\ref{sec:limits}).
+We do not compare proving times because the available runs were collected on a
+shared machine. We do not study other proof systems or circuits at GPT-2 scale
+(Section~\ref{sec:limits}).
 
 % ============================================================
 \section{Related Work}
@@ -120,7 +118,24 @@ sparsification and by narrowing activation ranges, which shrinks the lookup
 tables; \citet{kang2022scaling} proved inference of an ImageNet-scale model with
 ZK-SNARKs. These works fix the architecture and improve the prover or the
 model. We hold the prover (EZKL~\citep{ezkl}) fixed and measure how architecture
-choices change compiled circuit size and proving cost.
+choices change compiled circuit size.
+
+\paragraph{Measurements and cost guidance for EZKL.}
+\citet{ganescu2024} study parameter/constraint scaling and proof runtime for a
+nanoGPT implementation. Jo~\citep{jo2026} measures EZKL~23.0.5 row scaling for
+ReLU MLP depth and analyzes lookup cost; a Zenodo artifact reports ReLU-count
+correlations with EZKL/Halo2 proof cost~\citep{zkcostaware2026}. The EZKL
+nanoGPT account explains that dot-product constraints wrap into additional
+advice columns when the row domain fills~\citep{ezklnanogpt2023}. Practitioner
+accounts argue that matrix products are relatively cheap and nonlinearities or
+lookups dominate in some proof systems~\citep{pow2024,gupta2026}. Pow's earlier
+EZKL study also compares accuracy with proving cost~\citep{pow2024}. These
+works establish the relevant hypotheses and implementation context. We add a
+controlled transformer activation/attention grid, report both rows and inner
+columns, test the row--column product against a shape-only baseline, and measure
+how a fixed-point compiled model's logits and perplexity compare with its
+full-precision counterpart. Our results are limited to EZKL~23.0.5 and the
+tested small shapes; they do not establish a universal zkML cost law.
 
 \paragraph{Hardware-aware NAS and cost models.}
 \citet{cai2019proxylessnas}, \citet{tan2019mnasnet} and \citet{wu2019fbnet}
@@ -128,9 +143,9 @@ established latency-aware search with hardware cost proxies, validated against
 measured latency; \citet{javaheripi2022lts} observe that decoder parameter count
 correlates with perplexity and use it as a training-free proxy for language
 models. \citet{nass2020} search for architectures under homomorphic-encryption and
-garbled-circuit secure inference. Our analogue of the latency-validation step is
-Sections~\ref{sec:ezkl} and~\ref{sec:proving}, with circuit size and proving time
-standing in for latency.
+garbled-circuit secure inference. Our analogous measurement is compiled circuit size
+(Section~\ref{sec:ezkl}); proving-time comparisons are outside this paper's
+claims.
 
 \paragraph{Zero-cost proxies.}
 SNIP~\citep{lee2019snip} and NEAR~\citep{husistein2025near} are training-free
@@ -151,7 +166,7 @@ either softmax or unnormalized (``linear'') causal attention. The variant called
 factors separately. Positions are learned absolute embeddings unless rotary is
 stated; the EZKL grid uses learned absolute positions.
 
-\paragraph{Analytical cost model.}
+\paragraph{Author-defined operation-count stand-in.}
 The model (\path{experiments/operator_attribution.py}; per-operator costs vendored
 in \path{proxy/op_costs.py}) sums, per operator category, an operation count
 times a per-operation constraint cost. Matrix products cost 1 constraint per
@@ -162,9 +177,10 @@ element, the FFN activation costs 2 (ReLU), 24 (GELU), 2 (poly2) or 0
 (identity) per hidden element, LayerNorm 24 per element, and the token embedding
 (plus position embedding when rotary is off) 2 per table entry. It has no term
 for the output (LM-head) projection. Here $s$ is sequence length and $d$ the
-width. We call its output ``modelled constraints.'' It is our own formalization of the
-constraint-counting argument (the code is in the repository), a stand-in for the
-heuristics common in the ZK-ML literature, not a published system's model.
+width. We call its output ``modelled constraints.'' This explicit formalization
+is our own stand-in for a broad operation-counting intuition; it is not a cost
+model proposed by EZKL or by prior work. Results comparing it with EZKL test
+this formalization only.
 
 \paragraph{Measurement.}
 Each model is exported to ONNX (opset 18) and passed to EZKL~23.0.5
@@ -173,9 +189,7 @@ Each model is exported to ONNX (opset 18) and passed to EZKL~23.0.5
 and chooses the fixed-point scale itself (\texttt{param\_scale} is 13 in 86
 records, 12 in 17 and 11 in 5; the linear variant is always 13), which
 confounds row counts with the scale, so we replicate the grid with the scale
-pinned (Section~\ref{sec:ezkl}, ``Robustness to the fixed-point scale''). We record \texttt{num\_rows} and \texttt{logrows}.
-The grid compiles only (circuit size, not proving time); Section~\ref{sec:proving}
-proves a subset. Weights are random initialization. The causal mask uses a finite fill value of
+pinned (Section~\ref{sec:ezkl}, ``Robustness to the fixed-point scale''). We record \texttt{num\_rows}, the EZKL \texttt{num\_inner\_cols} setting and dynamic column size. The revision grid reports these directly (Section~\ref{sec:ezkl}); row count alone does not describe the advice-column layout. The grid measures compiled circuit size. Weights are random initialization. The causal mask uses a finite fill value of
 $-100$ (Section~\ref{sec:domain}). \texttt{total\_assignments} equals $2\times$
 \texttt{num\_rows} (exactly in 72 of 108 records, within $10^{-4}$ in the rest), so
 we report rows only.
@@ -191,15 +205,15 @@ $\in\{1,2,4\}$, sequence length $\in\{8,16,32\}$ and four activation variants
 only 27 distinct shapes, and the four variants at a shape are near-duplicates, so
 all intervals below are cluster bootstraps over shapes.
 
-\paragraph{The analytical model ranks well, but not better than a trivial baseline.}
+\paragraph{The operation-count stand-in does not beat a shape baseline.}
 The Spearman correlation between modelled constraints and measured rows is
 $0.927$ (95\% CI $[0.83,0.97]$). The product $\dmodel\nlayers s$ achieves $0.964$
 ($[0.91,0.98]$) and $\nlayers s$ alone $0.935$; the paired difference
-(analytical minus product) has 95\% CI $[-0.091,+0.005]$. Within each variant the
-analytical model scores $0.92$--$0.94$ and the product $0.97$--$0.98$. On this
-grid, a monotone size proxy ranks configurations at least as well as the model.
+(stand-in minus product) has 95\% CI $[-0.091,+0.005]$. Within each variant the
+stand-in scores $0.92$--$0.94$ and the product $0.97$--$0.98$. On this grid,
+a monotone shape proxy ranks configurations at least as well as our stand-in.
 
-\paragraph{The model is uncalibrated, and it extrapolates worse than every fitted alternative.}
+\paragraph{The stand-in is uncalibrated and extrapolates poorly.}
 The ratio of measured rows to modelled constraints ranges from $0.12$ to $0.53$
 (median $0.22$), so rows are \emph{smaller} than the modelled count and no single
 constant converts one to the other. A log-log fit on the model output alone has
@@ -216,7 +230,7 @@ product $\dmodel\nlayers s$, it includes a three-exponent power law and a
 \emph{calibrated additive model}: non-negative least squares of rows on the
 model's own operator categories (matrix products, softmax, activation,
 LayerNorm, embedding), optionally with an output-projection term the model
-lacks. The analytical model with a fitted log-log line is worst on every axis; the
+lacks. The operation-count stand-in with a fitted log-log line is worst on every axis; the
 additive fit is best on width, within $1$ point of the best on depth and $2$
 points behind the power law on sequence length.
 
@@ -230,7 +244,7 @@ points behind the power law on sequence length.
 \toprule
 Predictor & held-out $\dmodel$ & held-out $\nlayers$ & held-out $s$ \\
 \midrule
-Analytical model (log-log fit) & 38.1 & 24.0 & 37.0 \\
+Operation-count stand-in (log-log fit) & 38.1 & 24.0 & 37.0 \\
 Product $\dmodel\nlayers s$ (log-log fit) & 14.7 & 17.2 & 21.4 \\
 Power law $\dmodel^{x}\nlayers^{y}s^{z}$ & 17.6 & 7.2 & 6.0 \\
 Additive NNLS, model's categories & 11.2 & 7.5 & 8.0 \\
@@ -248,10 +262,38 @@ fits (95\% interval $[0,0.011]$). This does not show that matrix products are
 free: the matrix-product and LayerNorm terms are strongly collinear (Spearman
 $0.97$), the fit without the matrix-product term explains the same variance as
 the full fit ($R^2{=}0.989$ in both), and the matrix-product term alone gives
-$R^2{=}0.79$. The data cannot separate the two terms, so we read the result only
-as: a model that charges for matrix products in proportion to multiply-accumulate
-counts does not describe EZKL's row counts, consistent with EZKL packing many
-multiply-accumulates into one row.
+$R^2{=}0.79$. The data cannot separate the two terms. We therefore make no
+mechanistic inference from the zero matrix-product coefficient; row counts
+alone do not establish how EZKL lays out multiply-accumulates across its advice
+columns. The next comparison reports both dimensions.
+
+\paragraph{Rows and advice columns.}
+Across all 108 calibrated grid records, EZKL reports
+\texttt{num\_inner\_cols}$=2$. The recorded dynamic-column size is determined
+by width: 32,768 at width 64, 49,152 at width 96, and 65,536 at width 128
+(36 configurations each). Thus $\texttt{num\_rows}\times
+\texttt{num\_inner\_cols}$ is exactly twice the row count and preserves every
+rank and Spearman correlation. Its correlation with the operation-count
+stand-in is $0.927$ and with $\dmodel\nlayers s$ is $0.964$, identical to the
+row-only correlations. This observed constant column count does not reveal how
+individual multiply-accumulates are assigned within rows or columns.
+
+\begin{table}[t]
+\centering
+\caption{Advice-column measurements in the 108-circuit revision grid. All
+  records at a given width have the listed dynamic-column size and two inner
+  columns. The product is reported as a range of row counts doubled.}
+\label{tab:columns}
+\begin{tabular}{rccc}
+\toprule
+Width & Configurations & Dynamic-column size & Rows $\times$ inner columns \\
+\midrule
+64  & 36 & 32,768 & 695,258--12,869,102 \\
+96  & 36 & 49,152 & 794,412--15,971,904 \\
+128 & 36 & 65,536 & 1,096,154--21,646,966 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \paragraph{What costs rows: the FFN nonlinearity at short sequences.}
 Table~\ref{tab:decomp} crosses attention (softmax or linear) with the FFN
@@ -282,7 +324,7 @@ $42\%$ (GELU). Over the full grid, relative to the identity-FFN linear variant,
 GELU uses $1.45\times$ the rows (by width $1.43$, $1.46$, $1.43$), poly2
 $1.25\times$ ($1.26$, $1.24$, $1.22$) and ReLU $1.10\times$ ($1.14$, $1.10$,
 $1.09$); GELU's overhead is flat in width, while poly2's and ReLU's shrink slightly
-(by 3 and 5 points between widths 64 and 128). The analytical model puts the linear variant only $3$--$8.5\%$ below
+(by 3 and 5 points between widths 64 and 128). The operation-count stand-in puts the linear variant only $3$--$8.5\%$ below
 GELU at these shapes, against $31\%$ measured.
 
 \paragraph{Softmax grows with sequence length.}
@@ -331,7 +373,7 @@ To test extrapolation beyond the fitted range, we compiled 16 further
 configurations (widths 256 and 512, 1--2 layers, sequence lengths 16 and 64;
 scale pinned at 11; up to $2.2\times10^{7}$ rows at domain $2^{25}$) and predicted
 their rows with every predictor fitted on the 108-configuration grid
-(Table~\ref{tab:oor}). The analytical model's fitted line overpredicts by a factor of
+(Table~\ref{tab:oor}). The operation-count stand-in's fitted line overpredicts by a factor of
 about $2$ (error $122\%$), and its raw measured/modelled ratio falls to
 $0.03$--$0.10$ (median $0.057$), below the $0.12$--$0.53$ seen on the grid: the gap
 widens with size. The product $\dmodel\nlayers s$ and the power law predict
@@ -351,7 +393,7 @@ $1.22$--$1.26$ and $1.09$--$1.14$ at widths 64--128).
 \toprule
 Predictor & Error (\%) & Median pred./measured & Spearman \\
 \midrule
-Analytical model (log-log fit) & 122.2 & 2.13 & 0.88 \\
+Operation-count stand-in (log-log fit) & 122.2 & 2.13 & 0.88 \\
 Product $\dmodel\nlayers s$ (log-log fit) & 10.0 & 1.00 & 0.99 \\
 Power law $\dmodel^{x}\nlayers^{y}s^{z}$ & 10.7 & 0.90 & 0.99 \\
 Additive NNLS & 16.1 & 1.15 & 0.96 \\
@@ -361,79 +403,9 @@ Additive NNLS & 16.1 & 1.15 & 0.96 \\
 
 \paragraph{Scope.}
 The grid has at most four layers, width 128 and sequence length 32, and the
-out-of-range check reaches width 512 and sequence length 64 with 1--2 layers. The
-analytical argument concerns much larger models (GPT-2 scale: width 768, 12
-layers, sequence length 512 or more), which we do not reach; the power-law fits
-should not be extrapolated beyond the range tested.
-
-% ============================================================
-\section{Proving Time, Memory and Key Size}
-\label{sec:proving}
-% ============================================================
-
-Compiled rows are a proxy; to test it we generated real proofs for 24
-configurations: six shapes (width 64--128, 1--2 layers, sequence length 8--16)
-crossed with the four variants, at fixed-point scale 11 and domains $2^{19}$ to
-$2^{21}$. Each configuration runs the full pipeline (compile, setup, witness,
-prove, verify) in a fresh process, with a locally generated structured reference
-string (suitable for timing, not for security). We ran the 20 configurations with
-domain at most $2^{20}$ twice (the four at $2^{21}$ once). All proofs verified.
-
-\begin{table}[t]
-\centering
-\caption{Mean proving time in seconds over two runs (domain $\log_2$ size in
-  parentheses) for the four variants at six shapes (width/layers/sequence); the
-  64/2/16 row is a single run. Shared 24-core machine; see the text for
-  run-to-run variation.}
-\label{tab:prove}
-\begin{tabular}{lcccc}
-\toprule
-Shape & linear & ReLU & poly2 & GELU \\
-\midrule
-64/1/8   & 65 (19)  & 94 (19)  & 84 (19)  & 77 (19) \\
-64/1/16  & 128 (20) & 166 (20) & 161 (20) & 156 (20) \\
-64/2/8   & 141 (20) & 150 (20) & 141 (20) & 155 (20) \\
-64/2/16  & 218 (21) & 253 (21) & 269 (21) & 346 (21) \\
-96/1/8   & 67 (19)  & 96 (19)  & 76 (19)  & 146 (20) \\
-128/1/8  & 138 (20) & 177 (20) & 160 (20) & 170 (20) \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\paragraph{Rows predict proving cost, through the domain size.}
-Over the 24 configurations (six shapes, three domain levels), compiled rows
-correlate with mean proving time (Spearman $0.89$, cluster-bootstrap 95\%
-interval over the six shapes $[0.54,0.98]$); the product $\dmodel\nlayers s$
-scores $0.88$. Within a shape, a larger row count means a longer mean proving time
-in $26$ of $36$ variant pairs. Proving time is close to a step function of the
-power-of-two domain: it roughly doubles with each extra domain bit ($65$--$96$\,s at
-$2^{19}$, $128$--$177$\,s at $2^{20}$, and $218$--$346$\,s, single runs, at $2^{21}$).
-Small row differences can therefore have a large effect: at width 96, GELU's
-$552$K rows cross $2^{19}=524$K, its domain grows from 19 to 20 bits, and it takes
-$146$\,s against $67$--$96$\,s for the other variants ($2.2\times$ the linear
-variant). Even these toy models are heavy: the proving key is $8.5$--$40.5$\,GB,
-peak memory $21$--$103$\,GB (decimal), the proof $0.7$--$1.3$\,MB, verification
-$0.6$--$3.4$\,s, and (first run) setup $58$--$321$\,s.
-
-\paragraph{Timing is noisy on a shared machine.}
-The machine was shared with other jobs (load average $20$--$40$ on 24 cores). The
-second run of each configuration took between $0.82\times$ and $1.91\times$ the
-first run's time (median $1.24\times$); the per-configuration coefficient of
-variation over the two runs is $15\%$ (median, maximum $44\%$). Absolute times,
-and differences between variants of less than about $30\%$, should be read as
-indicative only; the domain steps and the row-driven ordering across shapes are
-the robust effects.
-
-\paragraph{Activation overhead in proving time.}
-Using mean times, relative to the linear variant ReLU takes a median $1.29\times$
-as long to prove ($1.06$--$1.46$), poly2 $1.20\times$ ($1.00$--$1.30$) and GELU
-$1.22\times$ ($1.10$--$2.19$, the maximum being the domain-boundary case), against
-median row ratios of $1.09$, $1.20$ and $1.38$. Nonlinear activations therefore
-cost roughly $20$--$30\%$ more proving time than the linear variant, but proving
-time does not separate the nonlinearities: ReLU is faster than poly2 in one of six
-shapes and slower in five, and GELU is slower than ReLU in three and slower than
-poly2 in four. With two runs per configuration, these orderings are within the
-run-to-run noise.
+out-of-range check reaches width 512 and sequence length 64 with 1--2 layers. GPT-2-scale models (width 768, 12 layers, sequence length 512 or more) lie
+outside our measured range; none of the fitted laws should be extrapolated
+beyond the tested shapes.
 
 % ============================================================
 \section{Proving-Domain Size Depends on the Mask Fill Value}
@@ -499,35 +471,37 @@ about $0.5$ perplexity) and report validation and test perplexity at that
 checkpoint (token-weighted, full splits). Validation perplexity at the selected
 checkpoint is therefore optimistically biased, and test perplexity is the
 unbiased figure.
-$\pm$ is the sample standard deviation over seeds ($n{=}3$). The reference is
-pretrained GPT-2-small evaluated zero-shot on the same blocks. Except where
-marked, models use rotary positions.
+$\pm$ is the sample standard deviation over seeds ($n{=}3$). The scratch-trained models use rotary positions except where marked. We do not
+compare their perplexities with GPT-2 results reported under a different context
+window or tokenization protocol.
 
 \begin{table}[t]
 \centering
 \caption{Perplexity at the validation-selected checkpoint (mean $\pm$ s.d., 3
-  seeds). ``Final val'' is the last-step validation perplexity. Modelled cost is
-  the (uncalibrated) analytical model at sequence length 256, relative to the
-  GPT-2-small architecture. Distillation uses a frozen pretrained GPT-2 teacher
+  seeds). ``Final val'' is the last-step validation perplexity. The table
+contains scratch-trained models only; GPT-2 zero-shot values are omitted because
+Radford et al. report WikiText-2 test PPL $29.41$ and attribute that table
+entry to Gong et al.; context-window and tokenization choices affect perplexity
+~\citep{radford2019gpt2,hfperplexity}. Distillation
+uses a frozen GPT-2 teacher
   ($\alpha{=}0.7$) and is not a from-scratch result.}
 \label{tab:quality}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{lrrrrrr}
+\begin{tabular}{lrrrrr}
 \toprule
-Model & Params & Modelled cost & Val PPL & Test PPL & Final val & Best step \\
+Model & Params & Val PPL & Test PPL & Final val & Best step \\
 \midrule
-GPT-2-small, pretrained, zero-shot & 124M & --- & 44.4 & 43.5 & --- & --- \\
-GPT-2-small architecture, learned positions & 124M & $1.0\times$ & $179.2\pm2.2$ & $187.0\pm2.6$ & 275.3 & 2250 \\
-GPT-2-small architecture, rotary & 124M & $1.0\times$ & $150.9\pm0.1$ & $158.4\pm0.9$ & 243.4 & 2250 \\
-640d/10L GELU & 81M & $1.7\times$ cheaper & $147.6\pm1.7$ & $156.0\pm1.9$ & 198.5 & 2750 \\
-512d/8L ReLU & 51M & $3.3\times$ cheaper & $151.7\pm0.7$ & $157.8\pm1.1$ & 204.0 & 2250 \\
-384d/10L poly2 & 37M & $4.5\times$ cheaper & $155.0\pm1.2$ & $161.0\pm1.2$ & 223.4 & 2417 \\
-384d/6L GELU & 30M & $7.6\times$ cheaper & $161.2\pm1.0$ & $167.0\pm1.4$ & 200.0 & 2250 \\
-384d/6L ReLU & 30M & $7.6\times$ cheaper & $159.7\pm1.7$ & $165.7\pm1.7$ & 199.6 & 2250 \\
-384d/6L poly2 & 30M & $7.6\times$ cheaper & $160.4\pm1.7$ & $166.6\pm1.8$ & 229.0 & 2250 \\
-384d/6L linear & 30M & $7.6\times$ cheaper & $237.3\pm1.5$ & $244.0\pm1.8$ & 240.7 & 3500 \\
-384d/4L linear & 26M & $11.4\times$ cheaper & $247.0\pm3.1$ & $253.6\pm2.8$ & 251.8 & 3500 \\
-384d/4L linear, distilled from GPT-2 & 26M & $11.4\times$ cheaper & $185.2\pm2.0$ & $187.7\pm1.9$ & 185.3 & 4917 \\
+GPT-2-small architecture, learned positions & 124M & $179.2\pm2.2$ & $187.0\pm2.6$ & 275.3 & 2250 \\
+GPT-2-small architecture, rotary & 124M & $150.9\pm0.1$ & $158.4\pm0.9$ & 243.4 & 2250 \\
+640d/10L GELU & 81M & $147.6\pm1.7$ & $156.0\pm1.9$ & 198.5 & 2750 \\
+512d/8L ReLU & 51M & $151.7\pm0.7$ & $157.8\pm1.1$ & 204.0 & 2250 \\
+384d/10L poly2 & 37M & $155.0\pm1.2$ & $161.0\pm1.2$ & 223.4 & 2417 \\
+384d/6L GELU & 30M & $161.2\pm1.0$ & $167.0\pm1.4$ & 200.0 & 2250 \\
+384d/6L ReLU & 30M & $159.7\pm1.7$ & $165.7\pm1.7$ & 199.6 & 2250 \\
+384d/6L poly2 & 30M & $160.4\pm1.7$ & $166.6\pm1.8$ & 229.0 & 2250 \\
+384d/6L linear & 30M & $237.3\pm1.5$ & $244.0\pm1.8$ & 240.7 & 3500 \\
+384d/4L linear & 26M & $247.0\pm3.1$ & $253.6\pm2.8$ & 251.8 & 3500 \\
+384d/4L linear, distilled from GPT-2 & 26M & $185.2\pm2.0$ & $187.7\pm1.9$ & 185.3 & 4917 \\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -544,8 +518,12 @@ size, where the learned-position model over-fits fastest. (iii) The ``linear''
 variant (no softmax, identity FFN) is $47\%$ worse than GELU at matched shape
 (it may also be under-tuned, since the learning rate is shared).
 (iv) Distillation lowers the 26M linear model's perplexity by $25\%$
-($247.0\to185.2$; that run was still improving at step 5{,}000). (v) Nothing
-trained from scratch approaches pretrained GPT-2 ($44.4$). (vi) All softmax
+($247.0\to185.2$; that run was still improving at step 5{,}000). (v) The pretrained GPT-2 zero-shot model scored $44.4$ on validation and $43.5$
+on test under our GPT-2-BPE, non-overlapping 256-token protocol. Radford et al. report $29.41$ for WikiText-2 and attribute that table entry
+to Gong et al.; our protocol instead uses the raw dataset, GPT-2 BPE and
+non-overlapping 256-token blocks. Context length and tokenization affect
+perplexity, and non-overlapping chunks lose context~\citep{radford2019gpt2,hfperplexity}. We therefore omit the zero-shot
+row from the table and make no direct comparison with scratch-trained models. (vi) All softmax
 models over-fit: the best checkpoint is at steps $2{,}250$--$2{,}750$ and the
 final-step perplexity is $18$--$61\%$ higher, so conclusions drawn from final
 checkpoints would be wrong (Table~\ref{tab:quality}, ``Final val'').
@@ -583,44 +561,48 @@ therefore a combination of both effects, not attributable to either alone.
 \label{sec:joint}
 % ============================================================
 
-Table~\ref{tab:joint} places the two measurements side by side for the five
-variants for which both exist. Rows are the measured EZKL rows from
-Table~\ref{tab:decomp} (width 128, $\nlayers{=}2$, $s{=}16$), relative to the
-linear-attention/identity-FFN variant; perplexity is from the 384d/6L study. The
-two were measured on different shapes, so the table supports only the
-\emph{ordering} of variants, not absolute costs at the quality-study scale.
+The original quality and circuit studies used different architectures, so their
+measurements cannot establish a cost--quality frontier. We replace that
+cross-shape comparison with one small model trained from scratch, compiled with
+EZKL, and evaluated in full precision and after EZKL fixed-point quantization
+using the same weights (Table~\ref{tab:joint}). This single configuration is a
+feasibility measurement; it does not establish a general frontier.
+
+The matched model has width 128, four heads, two ReLU transformer layers,
+sequence length 16, learned positions, LayerNorm, tied embeddings and a 512-symbol
+output vocabulary. Its vocabulary is a proxy: the 511 most frequent GPT-2 BPE
+tokens in the training split receive dedicated ids, and all remaining tokens
+map to one UNK id. The model is initialized from seed 51{,}051 and trained for
+500 AdamW steps (batch 16, learning rate $3\times10^{-4}$, weight decay $0.1$,
+gradient clipping at 1.0). For each held-out split, 64 evenly spaced,
+non-overlapping blocks contribute the 15 next-token targets at positions 2--16,
+for 960 targets. The EZKL~23.0.5 compilation has 2{,}319{,}073 rows, two inner
+columns, \texttt{total\_dynamic\_col\_size}=65{,}536, \texttt{logrows}=22, and
+\texttt{param\_scale}=11. We compile this trained state once and evaluate each sample
+through its EZKL fixed-point witness; both metrics therefore use identical
+weights, token ids, contexts and target ids. The sample-index and token-id
+hashes, token map, state dict, ONNX model, compiled circuit and settings are
+released with the per-split losses. This deliberately small-vocabulary point
+isolates quantization effects and is not directly comparable to the full
+50{,}257-token models above. Full-precision/EZKL perplexity is 16.636/16.635 on
+validation and 17.356/17.376 on test. The test difference is $0.11\%$ on this
+sample; it is not evidence that quantization is lossless in general.
 
 \begin{table}[t]
 \centering
-\caption{Measured relative rows (width 128, 2 layers, sequence 16) against
-  validation perplexity (384d/6L) for five variants.}
+\caption{Full-precision and EZKL fixed-point perplexity for the same trained
+  model and held-out token targets. Each split contains 64 non-overlapping
+  16-token blocks; positions 2--16 contribute 960 target tokens.}
 \label{tab:joint}
-\begin{tabular}{lcc}
+\begin{tabular}{lrrr}
 \toprule
-Variant (attention / FFN) & Relative rows & Val PPL \\
+Split & Target tokens & Full precision PPL & EZKL PPL \\
 \midrule
-linear / identity & 1.00 & $237.3\pm1.5$ \\
-softmax / identity & 1.02 & $192.4\pm0.6$ \\
-softmax / ReLU & 1.09 & $159.7\pm1.7$ \\
-softmax / poly2 & 1.23 & $160.4\pm1.7$ \\
-softmax / GELU & 1.44 & $161.2\pm1.0$ \\
+Validation & 960 & 16.636 & 16.635 \\
+Test & 960 & 17.356 & 17.376 \\
 \bottomrule
 \end{tabular}
 \end{table}
-
-Three variants are non-dominated on rows and perplexity: linear/identity,
-softmax/identity and softmax/ReLU. Softmax attention costs $2\%$ more rows than
-linear attention at this width ($4$--$24\%$ at width 64 as $s$ grows from 8 to 64,
-Table~\ref{tab:seqT}) and lowers perplexity by $19\%$ (identity FFN); a ReLU FFN
-costs $7\%$ more and lowers it by another $17\%$ ($192.4\to159.7$). GELU and poly2
-use $1.44\times$ and $1.23\times$ the base rows ($32\%$ and $12\%$ more than ReLU)
-with no perplexity gain. Proving time does not carry that separation
-(Section~\ref{sec:proving}): nonlinear variants take $20$--$30\%$ longer to prove
-than the linear variant, but ReLU, poly2 and GELU trade places across shapes
-within the run-to-run noise. We therefore conclude only that ReLU has the fewest
-rows among the three nonlinearities and, in this protocol, equal perplexity; we
-cannot show that this yields a proving-time advantage. These are statements about
-this grid and this training protocol only (Section~\ref{sec:limits}).
 
 % ============================================================
 \section{Implementation Notes and Sensitivity}
@@ -652,17 +634,17 @@ fill; domain sizes are comparable only at a fixed, modest fill.
 % ============================================================
 
 \paragraph{Takeaways.}
-For small causal transformers compiled and proved with EZKL~23.0.5: (1) an
-analytical constraint model is not better than the product of the dimensions for
+For small causal transformers compiled with EZKL~23.0.5: (1) the
+author-defined operation-count stand-in is not better than the product of the dimensions for
 ranking, is uncalibrated, and extrapolates worse than fitted alternatives (at width 256--512 its fitted
 prediction errs by $122\%$ against $10\%$ for the dimension product); a
 calibrated additive model is best on held-out grid values but not out of range
 (it puts no weight on the matrix-product term, an exploratory result given
 collinear features); (2) at short sequences the FFN nonlinearity drives the row
 overhead for GELU and poly2 (ReLU's is comparable to softmax's at width 64), but softmax grows with sequence length and at
-width 64 matches GELU's overhead by $s{=}64$; (3) compiled rows predict proving time across shapes (Spearman $0.89$)
-through a power-of-two domain that can double the cost, but repeated runs differ by up
-to $1.9\times$ on a shared machine and do not separate the nonlinearities; (4) ReLU,
+width 64 matches GELU's overhead by $s{=}64$; (3) the matched tiny model provides one feasibility point for full-precision and
+EZKL-quantized perplexity; proving-time comparisons are excluded because the
+available runs were made on a shared machine; (4) ReLU,
 poly2 and GELU are within $1\%$ in perplexity (ReLU nominally lowest), and ReLU has
 the fewest rows among them;
 (5) domain-size comparisons are only meaningful at a fixed,
@@ -674,8 +656,7 @@ modest mask fill.
 length $\le32$ (decomposition to $64$) and vocabulary 512, and the out-of-range
 check reaches width 512 with 1--2 layers and sequence length $\le64$; proofs are limited to
 width $\le128$, 1--2 layers, sequence length $\le16$ and domain $\le2^{21}$. We do
-not measure GPT-2-scale circuits, the regime where the analytical argument is
-strongest, and the fitted laws should not be extrapolated beyond the range tested.
+not measure GPT-2-scale circuits, which is outside the tested range, and the fitted laws should not be extrapolated beyond the range tested.
 (2) \emph{Proving measurements are noisy:} two runs for the 20 configurations with domain at most
 $2^{20}$ and one for the four at $2^{21}$, on a machine shared with other jobs
 (load average $20$--$40$; run-to-run time ratios $0.82$--$1.91\times$), with a locally
@@ -683,16 +664,18 @@ generated, insecure reference string; we could not obtain an idle machine.
 (3) \emph{Single prover and version:}
 EZKL~23.0.5, random weights and fixed random calibration tokens; the fixed-point
 scale was chosen by calibration (replicated with the scale pinned); other
-backends are not measured. (4) \emph{Quality and cost are measured on different
-models:} the quality-study models were not compiled or proved, and the
-modelled-cost column of Table~\ref{tab:quality} comes from the uncalibrated
-model; Table~\ref{tab:joint} joins different shapes and supports ordering only.
+backends are not measured. (4) \emph{Joint quality and cost:} only one tiny vocabulary-proxy model is
+compiled and evaluated in full precision and after EZKL quantization; this is a
+feasibility point, not a quality--cost frontier, and it is not directly
+comparable to the 50,257-token quality study.
 (5) \emph{Quality data:} WikiText-2 is small, models over-fit within about 2{,}500
 steps, a single learning rate and no dropout or regularization sweep are used, and
 $n{=}3$ seeds, so differences of about $1\%$ (such as among GELU, ReLU and poly2)
 are consistent in sign but small, and activation rankings could change under a
 tuned learning rate or regularization; the ``linear'' variants may be under-tuned.
-(6) \emph{Quantized accuracy} of the compiled circuits is not measured.
+(6) \emph{Quantized quality:} the matched measurement covers one tiny model and
+a small held-out sample; it does not establish quantized quality for larger
+architectures or the full-vocabulary study.
 (7) \emph{Implementation confound:} linear attention multiplies the scores by the
 causal mask while softmax attention uses a masked fill followed by softmax, so
 the measured softmax overhead also includes that implementation difference. (8) \emph{No search
@@ -704,31 +687,72 @@ paper makes no claim.
 \begingroup\sloppy
 Code, the 108 EZKL records at calibrated and pinned scale, the decomposition
 records (sequence lengths 8--64), the 16 out-of-range records, the mask-fill
-sweep, the proof records (both runs) and
+sweep, supporting proof records (not used for timing claims), and
 all training-run records (with learning curves) are in
 \url{https://github.com/npow/ezkl-transformer-cost-study} (release tag
-\path{v1}; scripts \path{run_ezkl_validation.py},
-\path{run_ezkl_proving.py} (repeat runs via its \path{--out} option),
+\path{v2}; scripts \path{run_ezkl_validation.py},
 \path{run_maskfill_sweep.py}, \path{run_causal_lm_study.py},
-\path{analyze_validation.py}; raw data under \path{artifacts/}; the cost model's
+\path{analyze_validation.py}, \path{analyze_advice_columns.py},
+\path{run_matched_quantized_quality.py}; raw data under \path{artifacts/}; the stand-in's
 operator table is vendored in \path{proxy/op_costs.py}). All reported numbers are
 produced by those scripts.
 \endgroup
 
 \paragraph{Conclusion.}
-Within the range we could measure and prove, an analytical constraint model adds
+Within the range we could compile, our author-defined operation-count stand-in adds
 little over the product of the dimensions and fitted alternatives beat it in
 held-out and out-of-range row prediction; the FFN nonlinearity is the main
 activation-dependent row cost at short sequences while softmax grows with
-sequence length; compiled rows predict proving time through a power-of-two
-domain that can double the cost, although proving times on a shared machine are too
-noisy to separate ReLU, poly2 and GELU; and ReLU has the fewest rows among the
-nonlinearities at no perplexity penalty in this protocol. Whether any of this holds
-at GPT-2 scale remains to be measured with full-size circuits.
+sequence length; proving-time comparisons are excluded because available timings
+were collected on a shared machine; and the full-precision study found ReLU had
+the fewest rows among nonlinearities without a material perplexity penalty in
+that protocol. For the one matched small-vocabulary model, EZKL's fixed-point
+test perplexity differs by $0.11\%$ from full precision on 960 targets. Neither
+result establishes quantized quality at GPT-2 scale, which remains to be measured
+with full-size circuits.
 
 \bibliographystyle{plainnat}
 
 \begin{thebibliography}{99}
+
+\bibitem[Abdulrahman(2026)]{zkcostaware2026}
+Abdulrahman.
+\newblock {ZK Cost-Aware Model Training: An Empirical Analysis of ReLU
+  Activation Count as a Predictor of Zero-Knowledge Proof Cost}.
+\newblock Zenodo, 2026. doi:10.5281/zenodo.21266805.
+
+\bibitem[Ganescu and Passerat-Palmbach(2024)]{ganescu2024}
+Ganescu, B.-M. and Passerat-Palmbach, J.
+\newblock {Trust the Process}: Zero-Knowledge Machine Learning to Enhance
+  Trust in Generative {AI} Interactions.
+\newblock arXiv:2402.06414, 2024.
+
+\bibitem[Gupta(2026)]{gupta2026}
+Gupta, G.~C.
+\newblock In zk{ML} the matrix multiplies are basically free---it is the {ReLU}
+  and softmax that cost you.
+\newblock Proof of Tech, 2026.
+\newblock \url{https://proofoftech.org/blog/zkml-nonlinearities-are-the-tax/}.
+
+\bibitem[Jo(2026)]{jo2026}
+Jo, M.~J.
+\newblock A separation principle for lookup-based zk{ML}: Activation-function
+  structure cannot reduce per-lookup proving cost.
+\newblock Cryptology {ePrint} Archive, Paper 2026/1390, 2026.
+\newblock \url{https://eprint.iacr.org/2026/1390}.
+
+\bibitem[Pow(2024)]{pow2024}
+Pow, N.
+\newblock zk{ML}: Tradeoffs in accuracy vs. proving cost.
+\newblock NP Labs, 2024.
+\newblock \url{https://np.engineering/posts/zkml-tradeoffs/}.
+
+\bibitem[Zkonduit(2023)]{ezklnanogpt2023}
+Zkonduit.
+\newblock Honey I {SNARKED} the {GPT}: How we got nano{GPT} into {Halo2}--{KZG}
+  circuits using {EZKL}.
+\newblock EZKL Blog, 2023.
+\newblock \url{https://blog.ezkl.xyz/post/nanogpt/}.
 
 \bibitem[Bian et~al.(2020)]{nass2020}
 Bian, S., Jiang, W., Lu, Q., Shi, Y., and Sato, T.
@@ -748,6 +772,12 @@ Zkonduit.
 \newblock {EZKL}: a library and command-line tool for zero-knowledge machine
   learning inference (version 23.0.5).
 \newblock \url{https://github.com/zkonduit/ezkl}.
+
+\bibitem[Hugging Face(2026)]{hfperplexity}
+Hugging Face.
+\newblock Perplexity of fixed-length models.
+\newblock Transformers documentation, accessed 2026.
+\newblock \url{https://huggingface.co/docs/transformers/perplexity}.
 
 \bibitem[Husistein et~al.(2025)]{husistein2025near}
 Husistein, R.~T., Reiher, M., and Eckhoff, M.

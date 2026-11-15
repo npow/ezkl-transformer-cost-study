@@ -4,7 +4,7 @@
 Reads ``artifacts/ezkl_validation/*.json`` and ``artifacts/causal_study/*.json``
 and writes ``artifacts/summary.json``.
 
-EZKL: rank agreement of the analytical model AND trivial baselines, cluster
+EZKL: rank agreement of the author-defined operation-count stand-in and shape baselines, cluster
 bootstrap CIs over shapes (the 4 activations at a shape are near-duplicates),
 log-log fits, a leave-one-width-out held-out test, activation overheads, the
 softmax x FFN decomposition, and logrows.
@@ -174,7 +174,7 @@ def _components(ok):
                           + b.attn_out_proj_constraints + b.ffn_up_constraints + b.ffn_down_constraints,
                 "softmax": b.softmax_constraints, "activation": b.activation_constraints,
                 "layernorm": b.layernorm_constraints, "embedding": b.embedding_constraints,
-                "lm_head": 2 * r["seq_len"] * r["d_model"] * 512}  # NOT in the analytical model
+                "lm_head": 2 * r["seq_len"] * r["d_model"] * 512}  # omitted from the author-defined operation-count stand-in
         cache.write_text(json.dumps(data, indent=1))
     return [data[r["name"]] for r in ok]
 

@@ -1,0 +1,23 @@
+{
+ "name": "d128_L4_T16_poly2",
+ "d_model": 128,
+ "n_layers": 4,
+ "seq_len": 16,
+ "activation": "poly2",
+ "analytical_constraints": 26464256,
+ "status": "ok",
+ "logrows": 23,
+ "num_rows": 4236061,
+ "total_assignments": 8472088,
+ "total_const_size": 66191,
+ "num_inner_cols": 2,
+ "total_dynamic_col_size": 65536,
+ "num_lookups": 1,
+ "lookup_range": [
+  -1641152,
+  0
+ ],
+ "input_scale": 0,
+ "param_scale": 13,
+ "elapsed_s": 104.49991703033447
+}

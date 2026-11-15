@@ -1,0 +1,23 @@
+{
+ "name": "d96_L2_T8_gelu",
+ "d_model": 96,
+ "n_layers": 2,
+ "seq_len": 8,
+ "activation": "gelu",
+ "analytical_constraints": 3943936,
+ "status": "ok",
+ "logrows": 20,
+ "num_rows": 944492,
+ "total_assignments": 1888966,
+ "total_const_size": 49477,
+ "num_inner_cols": 2,
+ "total_dynamic_col_size": 49152,
+ "num_lookups": 2,
+ "lookup_range": [
+  -819992,
+  4390
+ ],
+ "input_scale": 0,
+ "param_scale": 12,
+ "elapsed_s": 31.855643033981323
+}

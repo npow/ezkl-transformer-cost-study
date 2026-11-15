@@ -1,0 +1,23 @@
+{
+ "name": "d96_L4_T32_gelu",
+ "d_model": 96,
+ "n_layers": 4,
+ "seq_len": 32,
+ "activation": "gelu",
+ "analytical_constraints": 32356352,
+ "status": "ok",
+ "logrows": 23,
+ "num_rows": 7985952,
+ "total_assignments": 15971830,
+ "total_const_size": 49802,
+ "num_inner_cols": 2,
+ "total_dynamic_col_size": 49152,
+ "num_lookups": 2,
+ "lookup_range": [
+  -1640960,
+  9074
+ ],
+ "input_scale": 0,
+ "param_scale": 13,
+ "elapsed_s": 243.5224039554596
+}

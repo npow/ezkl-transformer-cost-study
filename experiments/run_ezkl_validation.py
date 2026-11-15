@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Validate the analytical ZK cost model against real EZKL circuits.
+"""Compare an author-defined operation-count stand-in with EZKL circuits.
 
 For a grid of small causal transformers, export ONNX, run ``ezkl.gen_settings``
 + ``ezkl.calibrate_settings`` and record the *measured* circuit statistics
-(num_rows, total_assignments, logrows).  The same configs are scored with the
-analytical model (``compute_op_breakdown``).  The paper reports the rank and
+(num_rows, total_assignments, logrows).  The same configs are scored with the explicit operation-count stand-in
+(``compute_op_breakdown``); it formalizes a heuristic for this study and is not
+a published EZKL or field cost model.  The paper reports the rank and
 log-log correlation between the two.
 
 Run inside an environment that has ``ezkl`` installed.
@@ -81,6 +82,8 @@ def measure(d: int, L: int, T: int, act: str) -> dict:
         rec.update(status="ok", logrows=s["run_args"]["logrows"],
                    num_rows=s.get("num_rows"), total_assignments=s.get("total_assignments"),
                    total_const_size=s.get("total_const_size"),
+                   num_inner_cols=s["run_args"].get("num_inner_cols"),
+                   total_dynamic_col_size=s.get("total_dynamic_col_size"),
                    num_lookups=len(s.get("required_lookups", [])),
                    lookup_range=s["run_args"].get("lookup_range"),
                    input_scale=s["run_args"].get("input_scale"),

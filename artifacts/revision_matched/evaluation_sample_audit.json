@@ -1,0 +1,18 @@
+{
+  "validation": {
+    "sequence_count": 64,
+    "target_token_count": 960,
+    "sequence_length": 16,
+    "block_indices_sha256": "d33d053f7974bf1d968293ab1899fb996cb759763c79a8df343b66c64d2dd443",
+    "context_ids_sha256": "d1733757640b67e2c6b09cd1994aa651f0e07d3aca7d56b112b6848ef645b628",
+    "target_ids_sha256": "42e970cb94b16a94e70f7d94effec6d54933589a26d9653a2dd73c6ae019519d"
+  },
+  "test": {
+    "sequence_count": 64,
+    "target_token_count": 960,
+    "sequence_length": 16,
+    "block_indices_sha256": "517cc586d0eb76c88504a49a656d4d96ff4ff58daecc0af31338c72d4a757c64",
+    "context_ids_sha256": "b6adb7ce950d2d00150e339c48d75fc74347152ea8b25319812d84f10c9846bc",
+    "target_ids_sha256": "2f859b32d35f8895822e4fd96de12ef0ced83afde08812e168f61c71371836ea"
+  }
+}

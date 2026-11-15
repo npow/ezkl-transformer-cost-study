@@ -1,8 +1,10 @@
 """Per-operator ZK constraint costs (vendored from zkml_bench.metrics.zk_proxy.OP_COSTS).
 
-Vendored so the analytical cost model in ``experiments/operator_attribution.py`` is
-reproducible from this repository alone.  Units: constraints per output element
-(or per MAC for MatMul/Gemm/Conv) under Halo2+plookup.
+Vendored per-operator weights used by the author-defined operation-count
+stand-in in ``experiments/operator_attribution.py``. These weights support an
+explicit heuristic formalization, not an EZKL-measured or universal cost model.
+Units are the source proxy's claimed constraints per output element (or per MAC
+for MatMul/Gemm/Conv) under Halo2+plookup.
 """
 
 OP_COSTS: dict[str, int] = {
