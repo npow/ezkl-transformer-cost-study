@@ -72,8 +72,16 @@ abstract = re.sub(r"^\s*%.*$", "", abstract, flags=re.M).strip()
 
 
 def md(tex):
-    return pypandoc.convert_text(tex, "gfm+tex_math_dollars", format="latex",
-                                 extra_args=["--wrap=none"]).strip()
+    converted = pypandoc.convert_text(tex, "gfm+tex_math_dollars", format="latex",
+                                      extra_args=["--wrap=none"]).strip()
+    # Pandoc GFM emits GitHub's $`...`$ syntax; publish.fun expects $...$.
+    converted = re.sub(r"\$`(.*?)`\$", lambda m: "$" + m.group(1) + "$",
+                       converted, flags=re.S)
+    # \verb is not supported by KaTeX inside math; identifiers use \text.
+    converted = re.sub(r"\\verb\|([^|]*)\|",
+                       lambda m: r"\text{" + m.group(1).replace("_", r"\_") + "}",
+                       converted)
+    return converted
 
 
 abstract_md = md(abstract)
