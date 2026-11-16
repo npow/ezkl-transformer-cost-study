@@ -20,8 +20,24 @@ Thank you for the detailed reports. We substantially revised the manuscript and 
 
 8. **Quantization scale and activation sensitivity.** In response to the request for quantized GELU, ReLU and polynomial results at scales 11--13, we added matched evaluations at all nine activation-scale pairs. Every pair uses the same activation-specific trained weights and 960 test targets as its full-precision reference. Test PPL changes were: ReLU +0.112%, +0.046%, and -0.046%; GELU +0.002%, +0.099%, and -0.007%; poly2 -0.065%, +0.050%, and -0.012% at scales 11, 12, and 13, respectively. The expanded results and sample/artifact audits are in `artifacts/revision_quantization/`; records preserve evaluation-time and released-circuit hashes because recompiling the same settings changes the byte hash. A released GELU scale-11 circuit exactly reproduced a saved batch of eight NLL values. The paper states that these are small-model sensitivity measurements and do not establish quality for larger or full-vocabulary models.
 
-The revised manuscript, scripts, and raw records are available in the linked repository at release `v3`.
+The revised manuscript, scripts, and raw records are available in the linked repository at release `v4`.
 
 Sincerely,
 
 Nissan Pow
+
+## Responses to individual reviewer questions
+
+**Gemini, Q1 / Kimi, Q1 (matrix-product and LayerNorm identification).** We have not removed/replaced LayerNorm, orthogonalized the predictors, or expanded the grid to identify causal costs. Instead, Section 4 reports the correlation (0.97) and equal R² with/without the matrix-product term and withdraws the mechanistic inference. Orthogonalization alone would change coefficient interpretation without adding independent experimental variation. Whether LayerNorm replacement changes the correlation remains unanswered.
+
+**Gemini, Q2 (quantized activation quality).** The matched-quality section and activation/scale table, and `artifacts/revision_quantization/` report all nine activation/scale combinations. Each validation and test measurement has 960 targets. This answers the question for the explicitly defined 512-symbol proxy, not the full-vocabulary quality study. We do not claim that the large models preserve their ordering after quantization.
+
+**Gemini, Q3 / Kimi, Q2 / Grok, Q2 (idle timing).** No new idle-host proof timings were collected. We selected the editor's permitted alternative: remove proving-time inferences. We cannot answer whether an idle-host experiment would resolve an activation gap or domain-step effect. Archived timing records do not support these claims.
+
+**Kimi, Q3 (learning-rate tuning).** No per-variant learning-rate sweep was run, so survival of the ReLU ordering under tuning is unknown. We explicitly withdraw a quality ranking/equivalence claim from the discussion and conclusion. The three-seed shared-protocol results remain descriptive.
+
+**Kimi, implementation confound.** Section 4 now states beside the sequence-length result that the softmax/linear contrast includes mask multiply versus masked fill. We interpret it as a combined implementation contrast and remove the unmeasured longer-sequence cost extrapolation.
+
+**Grok, Q1 (advice columns).** All 108 calibrated records report `num_inner_cols=2`; therefore rows times this setting preserves the row-only ranks (rho 0.927 versus the operation stand-in and 0.964 versus dimension product). We report dynamic-column size too. This setting is not asserted to be the total count of every physical advice-column family or a full circuit-area measurement.
+
+**Grok, Q3 (standard GPT-2 PPL).** We did not obtain a new standard-protocol score and do not report one. We selected the editor's permitted protocol-explanation alternative, document raw WikiText-2, GPT-2 BPE, and disjoint 256-token contexts, and remove the direct comparison. We do not claim a numerical decomposition of the discrepancy between tokenization and context effects.

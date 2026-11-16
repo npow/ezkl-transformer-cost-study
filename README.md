@@ -43,4 +43,4 @@ uv run python experiments/run_maskfill_sweep.py
 uv run python experiments/run_causal_lm_study.py --group ablation
 ```
 
-The revised code and artifacts are published in release tag `v3`. The old proof records are retained as supporting artifacts. Reproducing them requires substantial memory and disk space; their proving times are not used for claims in the revised paper.
+The revised code and artifacts are published in release tag `v4`. The old proof records are retained as supporting artifacts. Reproducing them requires substantial memory and disk space; their proving times are not used for claims in the revised paper.
