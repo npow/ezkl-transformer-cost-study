@@ -42,7 +42,7 @@
 Published accounts argue that nonlinear operations can dominate zero-knowledge
 (ZK) inference cost, while matrix products can be relatively cheap. We measure
 how EZKL~23.0.5 allocates rows and advice columns for small causal transformers
-and what one jointly compiled and trained configuration costs in quantized
+and what small jointly trained and compiled models cost in quantized
 quality. We also formalize one operation-counting heuristic as an explicit
 predictor; this is our own stand-in, not a published model. We compile 108
 configurations (width
@@ -66,9 +66,10 @@ validation-selected checkpoints), ReLU, poly2 and GELU are within $1\%$ in
 perplexity, and larger models help within the tested protocol. Compiled circuits
 reach width 512 (the grid width 128) with at most four layers, and the mask-fill
 sweep spans domains 19--26. The large-vocabulary quality models were not
-compiled; for one matched 512-symbol model, fixed-point test PPL is 17.376
-versus 17.356 in full precision on 960 targets. Code and raw records are
-released.
+compiled; for three matched 512-symbol models using ReLU, GELU and polynomial-
+square activations, test PPL after fixed-point execution at scales 11--13 is
+within $0.12\%$ of each model's full-precision reference on 960 targets. Code
+and raw records are released.
 \end{abstract}
 
 % ============================================================
@@ -604,6 +605,45 @@ Test & 960 & 17.356 & 17.376 \\
 \end{tabular}
 \end{table}
 
+To address scale and activation dependence, we also trained the same small
+architecture separately with ReLU, GELU and polynomial-square activations, then
+compiled each fixed weight set at
+\texttt{param\_scale}$\in\{11,12,13\}$. For each activation, all three
+quantized evaluations use identical weights and the same held-out validation
+and test targets as their full-precision references. Table~\ref{tab:quant_scales}
+reports the test-split results (960 targets); validation PPL, per-split NLL,
+sample hashes, and compiled-artifact hashes are included in the released JSON
+records, including both evaluation-time and released-circuit SHA-256 values.
+Recompiling the same settings does not preserve the byte hash, but a sampled
+witness batch from the released GELU circuit exactly reproduced its recorded
+NLLs. Across the nine activation--scale pairs, test PPL changes range from
+$-0.07\%$ to $+0.11\%$ with no monotonic scale trend. This is a small-model
+sensitivity analysis, not evidence about full-vocabulary models or other
+architectures.
+
+\begin{table}[t]
+\centering
+\caption{Test perplexity for matched full-precision and EZKL fixed-point models
+  at three fixed-point scales. Each activation uses one trained weight set and
+  the same 960 held-out targets for all scales.}
+\label{tab:quant_scales}
+\begin{tabular}{lrrrr}
+\toprule
+Activation & Scale & Full precision PPL & EZKL PPL & Change (\%) \\
+\midrule
+ReLU & 11 & 17.356 & 17.376 & $+0.11$ \\
+ReLU & 12 & 17.356 & 17.364 & $+0.05$ \\
+ReLU & 13 & 17.356 & 17.348 & $-0.05$ \\
+GELU & 11 & 17.686 & 17.687 & $+0.00$ \\
+GELU & 12 & 17.686 & 17.704 & $+0.10$ \\
+GELU & 13 & 17.686 & 17.685 & $-0.01$ \\
+Poly2 & 11 & 17.516 & 17.505 & $-0.07$ \\
+Poly2 & 12 & 17.516 & 17.525 & $+0.05$ \\
+Poly2 & 13 & 17.516 & 17.514 & $-0.01$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 % ============================================================
 \section{Implementation Notes and Sensitivity}
 \label{sec:causal}
@@ -642,8 +682,9 @@ calibrated additive model is best on held-out grid values but not out of range
 (it puts no weight on the matrix-product term, an exploratory result given
 collinear features); (2) at short sequences the FFN nonlinearity drives the row
 overhead for GELU and poly2 (ReLU's is comparable to softmax's at width 64), but softmax grows with sequence length and at
-width 64 matches GELU's overhead by $s{=}64$; (3) the matched tiny model provides one feasibility point for full-precision and
-EZKL-quantized perplexity; proving-time comparisons are excluded because the
+width 64 matches GELU's overhead by $s{=}64$; (3) three matched tiny models
+provide a bounded feasibility check for full-precision and EZKL-quantized
+perplexity across activation and fixed-point scale; proving-time comparisons are excluded because the
 available runs were made on a shared machine; (4) ReLU,
 poly2 and GELU are within $1\%$ in perplexity (ReLU nominally lowest), and ReLU has
 the fewest rows among them;
@@ -664,17 +705,18 @@ generated, insecure reference string; we could not obtain an idle machine.
 (3) \emph{Single prover and version:}
 EZKL~23.0.5, random weights and fixed random calibration tokens; the fixed-point
 scale was chosen by calibration (replicated with the scale pinned); other
-backends are not measured. (4) \emph{Joint quality and cost:} only one tiny vocabulary-proxy model is
-compiled and evaluated in full precision and after EZKL quantization; this is a
-feasibility point, not a quality--cost frontier, and it is not directly
+backends are not measured. (4) \emph{Joint quality and cost:} only three tiny
+vocabulary-proxy models, one per activation, are compiled and evaluated in full
+precision and after EZKL quantization at three scales; this is a bounded
+feasibility check, not a quality--cost frontier, and it is not directly
 comparable to the 50,257-token quality study.
 (5) \emph{Quality data:} WikiText-2 is small, models over-fit within about 2{,}500
 steps, a single learning rate and no dropout or regularization sweep are used, and
 $n{=}3$ seeds, so differences of about $1\%$ (such as among GELU, ReLU and poly2)
 are consistent in sign but small, and activation rankings could change under a
 tuned learning rate or regularization; the ``linear'' variants may be under-tuned.
-(6) \emph{Quantized quality:} the matched measurement covers one tiny model and
-a small held-out sample; it does not establish quantized quality for larger
+(6) \emph{Quantized quality:} the matched measurements cover three tiny models
+and a small held-out sample; they do not establish quantized quality for larger
 architectures or the full-vocabulary study.
 (7) \emph{Implementation confound:} linear attention multiplies the scores by the
 causal mask while softmax attention uses a masked fill followed by softmax, so
@@ -690,10 +732,11 @@ records (sequence lengths 8--64), the 16 out-of-range records, the mask-fill
 sweep, supporting proof records (not used for timing claims), and
 all training-run records (with learning curves) are in
 \url{https://github.com/npow/ezkl-transformer-cost-study} (release tag
-\path{v2}; scripts \path{run_ezkl_validation.py},
+\path{v3}; scripts \path{run_ezkl_validation.py},
 \path{run_maskfill_sweep.py}, \path{run_causal_lm_study.py},
 \path{analyze_validation.py}, \path{analyze_advice_columns.py},
-\path{run_matched_quantized_quality.py}; raw data under \path{artifacts/}; the stand-in's
+\path{run_matched_quantized_quality.py},
+\path{run_activation_scale_quality.py}; raw data under \path{artifacts/}; the stand-in's
 operator table is vendored in \path{proxy/op_costs.py}). All reported numbers are
 produced by those scripts.
 \endgroup
@@ -706,10 +749,10 @@ activation-dependent row cost at short sequences while softmax grows with
 sequence length; proving-time comparisons are excluded because available timings
 were collected on a shared machine; and the full-precision study found ReLU had
 the fewest rows among nonlinearities without a material perplexity penalty in
-that protocol. For the one matched small-vocabulary model, EZKL's fixed-point
-test perplexity differs by $0.11\%$ from full precision on 960 targets. Neither
-result establishes quantized quality at GPT-2 scale, which remains to be measured
-with full-size circuits.
+that protocol. For three matched small-vocabulary models, fixed-point test PPL
+at scales 11--13 differs by at most $0.12\%$ from each model's full-precision
+reference on 960 targets. This does not establish quantized quality at GPT-2
+scale, which remains to be measured with full-size circuits.
 
 \bibliographystyle{plainnat}
 

@@ -1,0 +1,130 @@
+{
+  "seed": 51051,
+  "training_steps": 500,
+  "activation": "poly2",
+  "architecture": {
+    "d_model": 128,
+    "heads": 4,
+    "layers": 2,
+    "seq_len": 16,
+    "vocab_size": 512,
+    "ff_mult": 4,
+    "positions": "learned",
+    "layernorm": true,
+    "tied_embeddings": true
+  },
+  "state_sha256": "0d9d56a1beb9d599d1a6f0418a1cbdafa40e955296b9af8c1ac41c2d25b59ba6",
+  "onnx_sha256": "6275373c6995bc715934acfffa33808afbc5b2e5e4ed9ffe692080105d4459c1",
+  "token_map_sha256": "25c5fc6412c9990d117dfa848817f38340eb014ef1509ce8b2f034ddcbce78fd",
+  "evaluation_sample_audit": {
+    "validation": {
+      "sequence_count": 64,
+      "target_token_count": 960,
+      "sequence_length": 16,
+      "block_indices_sha256": "d33d053f7974bf1d968293ab1899fb996cb759763c79a8df343b66c64d2dd443",
+      "context_ids_sha256": "d1733757640b67e2c6b09cd1994aa651f0e07d3aca7d56b112b6848ef645b628",
+      "target_ids_sha256": "42e970cb94b16a94e70f7d94effec6d54933589a26d9653a2dd73c6ae019519d"
+    },
+    "test": {
+      "sequence_count": 64,
+      "target_token_count": 960,
+      "sequence_length": 16,
+      "block_indices_sha256": "517cc586d0eb76c88504a49a656d4d96ff4ff58daecc0af31338c72d4a757c64",
+      "context_ids_sha256": "b6adb7ce950d2d00150e339c48d75fc74347152ea8b25319812d84f10c9846bc",
+      "target_ids_sha256": "2f859b32d35f8895822e4fd96de12ef0ced83afde08812e168f61c71371836ea"
+    }
+  },
+  "full_precision": {
+    "validation_ppl": 16.87091713948382,
+    "validation_targets": 960,
+    "test_ppl": 17.516388132225664,
+    "test_targets": 960
+  },
+  "scales": {
+    "11": {
+      "scale": 11,
+      "ezkl": {
+        "version": "23.0.5",
+        "num_rows": 2572987,
+        "num_inner_cols": 2,
+        "total_dynamic_col_size": 65536,
+        "logrows": 22,
+        "param_scale": 11
+      },
+      "settings_sha256": "dc94f8e69608e848171daeb7201ece37f51b7af10915fab3e47d3e02d6b71979",
+      "compiled_circuit_sha256": "50dbe2c691317ac9192f693e264c9c9fbbdd3dfad8e47b9b86927d67815cbfd9",
+      "quantized": {
+        "validation": {
+          "ppl": 16.85969003398695,
+          "nll": 2711.928544998169,
+          "target_tokens": 960,
+          "relative_ppl_change_percent": -0.06654709642662793
+        },
+        "test": {
+          "ppl": 17.504932541787802,
+          "nll": 2747.983392715454,
+          "target_tokens": 960,
+          "relative_ppl_change_percent": -0.06539927267760204
+        }
+      },
+      "evaluation_circuit_sha256": "7de8ef78fc68d29c1885068d32dc26f3a4ed1fb2fa86222f07770f31c36b3f0a"
+    },
+    "12": {
+      "scale": 12,
+      "ezkl": {
+        "version": "23.0.5",
+        "num_rows": 2573023,
+        "num_inner_cols": 2,
+        "total_dynamic_col_size": 65536,
+        "logrows": 22,
+        "param_scale": 12
+      },
+      "settings_sha256": "2903e8037d28aa2ecc306abe663e62df0004cf62df19540e13cac0e0444bbea7",
+      "compiled_circuit_sha256": "10bc69f50bbe80d7ee64489541cbe6df17688ec91b0afa282e26f7aec845c55e",
+      "quantized": {
+        "validation": {
+          "ppl": 16.87028819129524,
+          "nll": 2712.531820297241,
+          "target_tokens": 960,
+          "relative_ppl_change_percent": -0.0037280023568175835
+        },
+        "test": {
+          "ppl": 17.525230089756143,
+          "nll": 2749.095899581909,
+          "target_tokens": 960,
+          "relative_ppl_change_percent": 0.05047820054986385
+        }
+      },
+      "evaluation_circuit_sha256": "7f6215403459d27c3809693c8c49b9c90c3602a2509a0bafdfd74dd271dc8942"
+    },
+    "13": {
+      "scale": 13,
+      "ezkl": {
+        "version": "23.0.5",
+        "num_rows": 2573023,
+        "num_inner_cols": 2,
+        "total_dynamic_col_size": 65536,
+        "logrows": 22,
+        "param_scale": 13
+      },
+      "settings_sha256": "ef4398b50dd6e39588cc992d08d9b807552977780393f5bde1de87c5a0939880",
+      "compiled_circuit_sha256": "5f3d8851fc72a2adee3c31dec0af13cf5889f2c1fd1f103626e0161ebcb29a30",
+      "quantized": {
+        "validation": {
+          "ppl": 16.87449163542859,
+          "nll": 2712.770986557007,
+          "target_tokens": 960,
+          "relative_ppl_change_percent": 0.021187324406968244
+        },
+        "test": {
+          "ppl": 17.51434496010562,
+          "nll": 2748.4994468688965,
+          "target_tokens": 960,
+          "relative_ppl_change_percent": -0.011664346009121473
+        }
+      },
+      "evaluation_circuit_sha256": "f9e35c281dbd62551caf01b558a41cd39b94526fcb3ff388fd035a089a81e711"
+    }
+  },
+  "elapsed_total_s": 0.563478946685791
+}
